@@ -2,9 +2,59 @@ const SUPABASE_URL = "https://zrytzmbfspanylozgmwf.supabase.co";
 
 const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpyeXR6bWJmc3Bhbnlsb3pnbXdmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc4NTAwMjIsImV4cCI6MjEwMzQyNjAyMn0.RTmCiHok0XRJlV5bsT_oaf9co7PoDJrao7hRwRvmgD4";
 
+// ===============================
+// COMPTEUR MEMBRES ACCUEIL
+// ===============================
+
+// ===============================
+// COMPTEUR MEMBRES ACCUEIL
+// ===============================
+
+async function loadHomeMembersCount(){
+
+const response = await fetch(
+
+SUPABASE_URL + "/rest/v1/members?select=id",
+
+{
+
+headers:{
+
+"apikey":SUPABASE_KEY
+
+}
+
+}
+
+);
 
 
+const members = await response.json();
+
+console.log("MEMBRES ACCUEIL :", members);
+
+
+const element = document.getElementById("homeMembersCount");
+
+
+if(element && Array.isArray(members)){
+
+element.textContent = members.length;
+
+}
+
+}
+
+
+if(document.getElementById("homeMembersCount")){
+
+loadHomeMembersCount();
+
+}
+
+// ===============================
 // INSCRIPTION MEMBRE
+// ===============================
 
 const joinForm = document.getElementById("joinForm");
 
@@ -94,10 +144,9 @@ document.getElementById("successMessage").textContent =
 
 }
 
-
-
-
+// ===============================
 // SIGNALEMENTS
+// ===============================
 
 const reportForm = document.getElementById("reportForm");
 
@@ -109,7 +158,6 @@ reportForm.addEventListener("submit", async function(e){
 
 
 e.preventDefault();
-
 
 
 const file = document.getElementById("photo").files[0];
@@ -162,9 +210,7 @@ photoUrl = SUPABASE_URL + "/storage/v1/object/public/reports/" + fileName;
 
 
 
-
 const data = {
-
 
 category:document.getElementById("category").value,
 
@@ -177,7 +223,6 @@ description:document.getElementById("description").value,
 status:"Nouveau",
 
 photo_url:photoUrl
-
 
 };
 
@@ -237,7 +282,14 @@ document.getElementById("reportMessage").textContent =
 
 
 }
+
+
+
+
+// ===============================
 // CONTACT
+// ===============================
+
 
 const contactForm = document.getElementById("contactForm");
 
@@ -324,11 +376,9 @@ document.getElementById("contactResponse").textContent =
 
 }
 
-
-
-
-
+// ===============================
 // CONNEXION ADMIN
+// ===============================
 
 
 const adminLoginForm = document.getElementById("adminLoginForm");
@@ -382,6 +432,8 @@ password:password
 
 const result = await response.json();
 
+console.log(result);
+
 
 
 if(response.ok){
@@ -422,8 +474,9 @@ document.getElementById("loginMessage").style.color="#C8102E";
 
 
 
-
-// PROTECTION PAGE ADMIN
+// ===============================
+// PROTECTION ADMIN
+// ===============================
 
 
 const isAdminPage = window.location.pathname.includes("admin.html");
@@ -447,9 +500,67 @@ window.location.href="admin-login.html";
 
 
 
+// ===============================
+// COMPTEURS TOTAUX
+// ===============================
 
 
-// CHARGER LES MEMBRES
+async function getCount(table, elementId){
+
+
+const token = localStorage.getItem("supabase_token");
+
+
+const response = await fetch(
+
+SUPABASE_URL + `/rest/v1/${table}?select=*`,
+
+{
+
+headers:{
+
+"apikey":SUPABASE_KEY,
+
+"Authorization":"Bearer "+token,
+
+"Prefer":"count=exact"
+
+}
+
+}
+
+);
+
+
+
+const count = response.headers.get("content-range");
+
+
+
+const element = document.getElementById(elementId);
+
+
+
+if(element && count){
+
+element.textContent = count.split("/")[1];
+
+}
+
+
+}
+
+// PAGINATION ADMIN
+
+let membersPage = 0;
+let reportsPage = 0;
+let contactsPage = 0;
+
+const limit = 20;
+
+// ===============================
+// CHARGER LES 20 DERNIERS MEMBRES
+// ===============================
 
 
 async function loadMembers(){
@@ -458,10 +569,9 @@ async function loadMembers(){
 const token = localStorage.getItem("supabase_token");
 
 
-
 const response = await fetch(
 
-SUPABASE_URL + "/rest/v1/members?select=*",
+    SUPABASE_URL + `/rest/v1/members?select=*&order=created_at.desc&limit=${limit}&offset=${membersPage * limit}`,
 
 {
 
@@ -481,9 +591,14 @@ headers:{
 
 const members = await response.json();
 
+
+
 if(!Array.isArray(members)){
+
 console.log("Erreur membres :", members);
+
 return;
+
 }
 
 
@@ -495,8 +610,9 @@ const container = document.getElementById("membersList");
 if(container){
 
 
-container.innerHTML="";
-
+if(membersPage === 0){
+    container.innerHTML="";
+}
 
 
 members.forEach(member=>{
@@ -522,7 +638,6 @@ container.innerHTML += `
 
 `;
 
-
 });
 
 
@@ -534,8 +649,9 @@ container.innerHTML += `
 
 
 
-
-// CHARGER LES SIGNALEMENTS
+// ===============================
+// CHARGER LES 20 DERNIERS SIGNALEMENTS
+// ===============================
 
 
 async function loadReports(){
@@ -544,10 +660,9 @@ async function loadReports(){
 const token = localStorage.getItem("supabase_token");
 
 
-
 const response = await fetch(
 
-SUPABASE_URL + "/rest/v1/reports?select=*",
+SUPABASE_URL + `/rest/v1/reports?select=*&order=created_at.desc&limit=${limit}&offset=${reportsPage * limit}`,
 
 {
 
@@ -569,15 +684,25 @@ const reports = await response.json();
 
 
 
+if(!Array.isArray(reports)){
+
+console.log("Erreur reports :", reports);
+
+return;
+
+}
+
+
+
 const container = document.getElementById("reportsList");
 
 
 
 if(container){
 
-
-container.innerHTML="";
-
+if(reportsPage === 0){
+    container.innerHTML="";
+}
 
 
 reports.forEach(report=>{
@@ -601,7 +726,6 @@ ${report.photo_url ? `<img src="${report.photo_url}" width="200">` : ""}
 
 `;
 
-
 });
 
 
@@ -614,7 +738,9 @@ ${report.photo_url ? `<img src="${report.photo_url}" width="200">` : ""}
 
 
 
-// CHARGER LES CONTACTS
+// ===============================
+// CHARGER LES 20 DERNIERS CONTACTS
+// ===============================
 
 
 async function loadContacts(){
@@ -623,10 +749,9 @@ async function loadContacts(){
 const token = localStorage.getItem("supabase_token");
 
 
-
 const response = await fetch(
 
-SUPABASE_URL + "/rest/v1/contacts?select=*",
+SUPABASE_URL + `/rest/v1/contacts?select=*&order=created_at.desc&limit=${limit}&offset=${contactsPage * limit}`,
 
 {
 
@@ -648,6 +773,16 @@ const contacts = await response.json();
 
 
 
+if(!Array.isArray(contacts)){
+
+console.log("Erreur contacts :", contacts);
+
+return;
+
+}
+
+
+
 const container = document.getElementById("contactsList");
 
 
@@ -655,8 +790,9 @@ const container = document.getElementById("contactsList");
 if(container){
 
 
-container.innerHTML="";
-
+if(contactsPage === 0){
+    container.innerHTML="";
+}
 
 
 contacts.forEach(contact=>{
@@ -678,7 +814,6 @@ container.innerHTML += `
 
 `;
 
-
 });
 
 
@@ -689,6 +824,10 @@ container.innerHTML += `
 
 
 
+
+// ===============================
+// LANCEMENT ADMIN
+// ===============================
 
 
 if(window.location.pathname.includes("admin.html")){
@@ -701,18 +840,88 @@ loadReports();
 loadContacts();
 
 
+getCount("members","membersCount");
+
+getCount("reports","reportsCount");
+
+getCount("contacts","contactsCount");
+
+
 }
+
+
+// CHARGER PLUS DE MEMBRES
+
+const loadMoreMembersBtn = document.getElementById("loadMoreMembers");
+
+
+if(loadMoreMembersBtn){
+
+loadMoreMembersBtn.addEventListener("click", function(){
+
+membersPage++;
+
+loadMembers();
+
+});
+
+}
+
+// CHARGER PLUS DE SIGNALEMENTS
+
+const loadMoreReportsBtn = document.getElementById("loadMoreReports");
+
+
+if(loadMoreReportsBtn){
+
+loadMoreReportsBtn.addEventListener("click", function(){
+
+reportsPage++;
+
+loadReports();
+
+});
+
+}
+
+// CHARGER PLUS DE CONTACTS
+
+const loadMoreContactsBtn = document.getElementById("loadMoreContacts");
+
+
+if(loadMoreContactsBtn){
+
+loadMoreContactsBtn.addEventListener("click", function(){
+
+contactsPage++;
+
+loadContacts();
+
+});
+
+}
+
+// ===============================
+// DECONNEXION
+// ===============================
+
 
 const logoutBtn = document.getElementById("logoutBtn");
 
+
 if(logoutBtn){
+
 
 logoutBtn.addEventListener("click", function(){
 
+
 localStorage.removeItem("supabase_token");
 
-window.location.href = "admin-login.html";
+
+window.location.href="admin-login.html";
+
 
 });
+
 
 }
