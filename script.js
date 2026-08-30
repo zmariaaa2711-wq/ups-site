@@ -2,14 +2,10 @@ const SUPABASE_URL = "https://zrytzmbfspanylozgmwf.supabase.co";
 
 const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpyeXR6bWJmc3Bhbnlsb3pnbXdmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc4NTAwMjIsImV4cCI6MjEwMzQyNjAyMn0.RTmCiHok0XRJlV5bsT_oaf9co7PoDJrao7hRwRvmgD4";
 
-// ===============================
-// COMPTEUR MEMBRES ACCUEIL
-// ===============================
 
 // ===============================
 // COMPTEUR MEMBRES ACCUEIL
 // ===============================
-
 async function loadHomeMembersCount(){
 
 const response = await fetch(
@@ -20,7 +16,11 @@ SUPABASE_URL + "/rest/v1/members?select=id",
 
 headers:{
 
-"apikey":SUPABASE_KEY
+"apikey":SUPABASE_KEY,
+
+"Prefer":"count=exact",
+
+"Range":"0-0"
 
 }
 
@@ -29,22 +29,19 @@ headers:{
 );
 
 
-const members = await response.json();
-
-console.log("MEMBRES ACCUEIL :", members);
+const count = response.headers.get("content-range");
 
 
 const element = document.getElementById("homeMembersCount");
 
 
-if(element && Array.isArray(members)){
+if(element && count){
 
-element.textContent = members.length;
-
-}
+element.textContent = count.split("/")[1];
 
 }
 
+}
 
 if(document.getElementById("homeMembersCount")){
 
@@ -170,7 +167,14 @@ let photoUrl = null;
 if(file){
 
 
-const fileName = Date.now()+"-"+file.name;
+const fileName = Date.now() + "-" + file.name
+.replace(/\s+/g, "-")
+.replace(/[éèêë]/g, "e")
+.replace(/[àâä]/g, "a")
+.replace(/[îï]/g, "i")
+.replace(/[ôö]/g, "o")
+.replace(/[ùûü]/g, "u")
+.replace(/[()]/g, "");
 
 
 
@@ -555,6 +559,8 @@ element.textContent = count.split("/")[1];
 let membersPage = 0;
 let reportsPage = 0;
 let contactsPage = 0;
+let postsPage = 0;
+let commentsPage = 0;
 
 const limit = 20;
 
@@ -825,29 +831,6 @@ container.innerHTML += `
 
 
 
-// ===============================
-// LANCEMENT ADMIN
-// ===============================
-
-
-if(window.location.pathname.includes("admin.html")){
-
-
-loadMembers();
-
-loadReports();
-
-loadContacts();
-
-
-getCount("members","membersCount");
-
-getCount("reports","reportsCount");
-
-getCount("contacts","contactsCount");
-
-
-}
 
 
 // CHARGER PLUS DE MEMBRES
@@ -884,6 +867,22 @@ loadReports();
 
 }
 
+// CHARGER PLUS D'ACTUALITES
+
+const loadMorePostsBtn = document.getElementById("loadMorePosts");
+
+if(loadMorePostsBtn){
+
+loadMorePostsBtn.addEventListener("click", function(){
+
+postsPage++;
+
+loadPostsAdmin();
+
+});
+
+}
+
 // CHARGER PLUS DE CONTACTS
 
 const loadMoreContactsBtn = document.getElementById("loadMoreContacts");
@@ -898,6 +897,507 @@ contactsPage++;
 loadContacts();
 
 });
+
+}
+
+// ===============================
+// ACTUALITÉS UPS
+// ===============================
+
+async function loadPosts() {
+
+const response = await fetch(
+
+SUPABASE_URL + `/rest/v1/posts?select=*&order=created_at.desc&limit=${limit}&offset=${postsPage * limit}`,
+
+{
+
+headers:{
+
+"apikey":SUPABASE_KEY
+
+}
+
+}
+
+);
+
+const posts = await response.json();
+
+console.log("POSTS RECUS :", posts);
+
+const container = document.getElementById("postsList");
+
+if(!container) return;
+
+container.innerHTML = "";
+
+if(posts.length === 0){
+
+container.innerHTML = "<p>Aucune actualité n'a encore été publiée.</p>";
+
+return;
+
+}
+
+posts.forEach(post=>{
+
+container.innerHTML += `
+
+<article class="post">
+
+<h2>${post.title}</h2>
+
+<p>${new Date(post.created_at).toLocaleDateString("fr-FR")}</p>
+
+${post.image_url ? `<img src="${post.image_url}" class="post-image">` : ""}
+
+<p>${post.content}</p>
+
+${post.video_url ? `
+<iframe
+width="100%"
+height="400"
+src="${post.video_url}"
+frameborder="0"
+allowfullscreen>
+</iframe>
+` : ""}
+
+<div class="likes">
+
+<button class="likeButton" onclick="addLike(${post.id})">
+
+<span id="heart-${post.id}">♡</span>
+
+<span id="likes-${post.id}">0</span>
+
+</button>
+
+</div>
+
+<div class="share-buttons">
+
+<button onclick="sharePost('${post.title}')">
+🔗 Partager
+</button>
+
+<button onclick="copyPostLink()">
+📋 Copier le lien
+</button>
+
+</div>
+
+
+<div class="comments">
+
+<h3>Commentaires</h3>
+
+<div id="comments-${post.id}">
+Chargement des commentaires...
+</div>
+
+<form class="commentForm" data-post="${post.id}">
+
+<input 
+type="text"
+class="commentName"
+placeholder="Votre prénom"
+required>
+
+<textarea
+class="commentMessage"
+placeholder="Votre commentaire"
+required></textarea>
+
+<button type="submit">
+Envoyer
+</button>
+
+</form>
+
+</div>
+
+</article>
+
+`;
+
+loadComments(post.id);
+
+loadLikes(post.id);
+
+});
+
+}
+
+if(window.location.pathname.includes("actualites.html")){
+
+loadPosts();
+
+}
+
+
+// ===============================
+// PUBLIER UNE ACTUALITÉ
+// ===============================
+
+const postForm = document.getElementById("postForm");
+
+if(postForm){
+
+postForm.addEventListener("submit", async function(e){
+
+e.preventDefault();
+
+const file = document.getElementById("postImage").files[0];
+
+let imageUrl = null;
+
+if(file){
+
+    const fileName = Date.now() + "-" + file.name
+.replace(/\s+/g, "-")
+.replace(/[éèêë]/g, "e")
+.replace(/[àâä]/g, "a")
+.replace(/[îï]/g, "i")
+.replace(/[ôö]/g, "o")
+.replace(/[ùûü]/g, "u")
+.replace(/[()]/g, "");
+
+const upload = await fetch(
+
+SUPABASE_URL + "/storage/v1/object/posts/" + fileName,
+
+{
+
+method:"POST",
+
+headers:{
+
+"apikey":SUPABASE_KEY,
+
+"Authorization":"Bearer " + SUPABASE_KEY,
+
+"Content-Type":file.type
+
+},
+
+body:file
+
+}
+
+);
+
+if(upload.ok){
+
+imageUrl =
+SUPABASE_URL +
+"/storage/v1/object/public/posts/" +
+fileName;
+
+}
+else{
+
+console.log("ERREUR UPLOAD IMAGE :");
+
+console.log(await upload.text());
+
+}
+
+}
+
+const data = {
+
+title:document.getElementById("postTitle").value,
+
+content:document.getElementById("postContent").value,
+
+image_url:imageUrl,
+
+video_url:document.getElementById("postVideo").value
+
+};
+
+const response = await fetch(
+
+SUPABASE_URL + "/rest/v1/posts",
+
+{
+
+method:"POST",
+
+headers:{
+
+"Content-Type":"application/json",
+
+"apikey":SUPABASE_KEY,
+
+"Authorization":"Bearer " + localStorage.getItem("supabase_token")
+
+},
+
+body:JSON.stringify(data)
+
+}
+
+);
+
+if(response.ok){
+
+document.getElementById("postMessage").textContent =
+"Actualité publiée avec succès.";
+
+document.getElementById("postMessage").style.color="#00853F";
+
+postForm.reset();
+
+}
+
+else{
+
+console.log(await response.text());
+
+document.getElementById("postMessage").textContent =
+"Erreur lors de la publication.";
+
+}
+
+});
+
+}
+
+// ===============================
+// CHARGER LES ACTUALITÉS ADMIN
+// ===============================
+
+async function loadPostsAdmin(){
+
+const token = localStorage.getItem("supabase_token");
+
+
+const response = await fetch(
+
+SUPABASE_URL + `/rest/v1/posts?select=*&order=created_at.desc&limit=${limit}&offset=${postsPage * limit}`,
+
+{
+
+headers:{
+
+"apikey":SUPABASE_KEY,
+
+"Authorization":"Bearer "+token
+
+}
+
+}
+
+);
+
+
+const posts = await response.json();
+
+console.log("POSTS ADMIN :", posts);
+
+
+const container = document.getElementById("postsListAdmin");
+
+console.log("CONTAINER ADMIN :", container);
+
+if(container){
+
+if(postsPage === 0){
+    container.innerHTML="";
+}
+
+
+posts.forEach(post=>{
+
+
+container.innerHTML += `
+
+<article>
+
+<h3>${post.title}</h3>
+
+<p>${post.content}</p>
+
+<button onclick="deletePost(${post.id})">
+Supprimer
+</button>
+
+</article>
+
+`;
+
+});
+
+
+}
+
+}
+
+async function deletePost(id){
+
+
+const confirmation = confirm(
+"Supprimer cette actualité ?"
+);
+
+
+if(!confirmation){
+return;
+}
+
+
+const response = await fetch(
+
+SUPABASE_URL + "/rest/v1/posts?id=eq."+id,
+
+{
+
+method:"DELETE",
+
+headers:{
+
+"apikey":SUPABASE_KEY,
+
+"Authorization":"Bearer "+localStorage.getItem("supabase_token")
+
+}
+
+}
+
+);
+
+if(response.ok){
+
+const message = document.createElement("p");
+
+message.textContent = "Actualité supprimée avec succès.";
+
+message.style.color = "#00853F";
+
+document.querySelector("h2").after(message);
+
+loadPostsAdmin();
+
+}
+
+
+else{
+
+console.log(await response.text());
+
+alert("Erreur suppression.");
+
+}
+
+
+}
+
+// CHARGER PLUS DE COMMENTAIRES
+
+const loadMoreCommentsBtn = document.getElementById("loadMoreComments");
+
+
+if(loadMoreCommentsBtn){
+
+loadMoreCommentsBtn.addEventListener("click", function(){
+
+commentsPage++;
+
+loadAdminComments();
+
+});
+
+}
+
+// ===============================
+// LANCEMENT ADMIN
+// ===============================
+
+if(window.location.pathname.includes("admin.html")){
+
+loadMembers();
+
+loadReports();
+
+loadContacts();
+
+loadPostsAdmin();
+
+getCount("members","membersCount");
+
+getCount("reports","reportsCount");
+
+getCount("contacts","contactsCount");
+
+}
+
+// ===============================
+// REPONDRE A UN COMMENTAIRE
+// ===============================
+
+async function replyComment(id){
+
+const reply = prompt("Votre réponse UPS :");
+
+
+if(!reply){
+
+return;
+
+}
+
+
+const token = localStorage.getItem("supabase_token");
+
+
+const response = await fetch(
+
+SUPABASE_URL + "/rest/v1/comments?id=eq."+id,
+
+{
+
+method:"PATCH",
+
+headers:{
+
+"Content-Type":"application/json",
+
+"apikey":SUPABASE_KEY,
+
+"Authorization":"Bearer "+token
+
+},
+
+body:JSON.stringify({
+
+admin_reply: reply
+
+})
+
+}
+
+);
+
+
+if(response.ok){
+
+alert("Réponse publiée.");
+
+loadAdminComments();
+
+}
+
+else{
+
+console.log(await response.text());
+
+alert("Erreur lors de la réponse.");
+
+}
+
 
 }
 
@@ -923,5 +1423,612 @@ window.location.href="admin-login.html";
 
 });
 
+
+}
+
+// ===============================
+// COMMENTAIRES ACTUALITES
+// ===============================
+
+document.addEventListener("submit", async function(e){
+
+if(e.target.classList.contains("commentForm")){
+
+e.preventDefault();
+
+
+const form = e.target;
+
+
+const data = {
+
+post_id: form.dataset.post,
+
+name: form.querySelector(".commentName").value,
+
+message: form.querySelector(".commentMessage").value
+
+};
+
+
+const response = await fetch(
+
+SUPABASE_URL + "/rest/v1/comments",
+
+{
+
+method:"POST",
+
+headers:{
+
+"Content-Type":"application/json",
+
+"apikey":SUPABASE_KEY,
+
+"Authorization":"Bearer " + SUPABASE_KEY
+
+},
+
+body:JSON.stringify(data)
+
+}
+
+);
+
+
+if(response.ok){ 
+
+const message = document.createElement("p");
+
+message.textContent = "Votre commentaire a bien été publié.";
+
+message.style.color = "#00853F";
+
+form.appendChild(message);
+
+form.reset();
+
+}
+
+else{
+
+console.log(await response.text());
+
+alert("Erreur lors de l'envoi.");
+
+}
+
+
+}
+
+});
+
+// ===============================
+// AFFICHER LES COMMENTAIRES
+// ===============================
+
+async function loadComments(postId){
+
+const response = await fetch(
+
+SUPABASE_URL + `/rest/v1/comments?select=*&post_id=eq.${postId}&order=created_at.desc`,
+
+{
+
+headers:{
+
+"apikey":SUPABASE_KEY
+
+}
+
+}
+
+);
+
+
+const comments = await response.json();
+
+console.log("COMMENTAIRES RECUS :", comments);
+
+const container = document.getElementById("comments-" + postId);
+
+
+if(!container) return;
+
+
+container.innerHTML = "";
+
+
+if(comments.length === 0){
+
+container.innerHTML = "<p>Aucun commentaire pour le moment.</p>";
+
+return;
+
+}
+
+
+comments.forEach(comment=>{
+
+container.innerHTML += `
+
+<div class="comment">
+
+<strong>${comment.name}</strong>
+
+<p>${comment.message}</p>
+
+${
+comment.admin_reply
+?
+`
+<div class="adminReply">
+
+<div class="adminReplyHeader">
+UPS (Administrateur)
+</div>
+
+<p>${comment.admin_reply}</p>
+
+</div>
+`
+:
+""
+}
+
+</div>
+
+`;
+
+});
+
+
+}
+
+// ===============================
+// CHARGER LES LIKES
+// ===============================
+
+async function loadLikes(postId){
+
+const response = await fetch(
+
+SUPABASE_URL + `/rest/v1/likes?select=id&post_id=eq.${postId}`,
+
+{
+
+headers:{
+
+"apikey":SUPABASE_KEY
+
+}
+
+}
+
+);
+
+
+const likes = await response.json();
+
+
+const element = document.getElementById("likes-" + postId);
+
+
+if(element){
+
+element.textContent = likes.length;
+
+if(localStorage.getItem("liked-" + postId)){
+
+const heart = document.getElementById("heart-" + postId);
+
+if(heart){
+heart.textContent="♥";
+heart.style.color="#C8102E";
+}
+
+}
+
+}
+
+}
+
+// ===============================
+// AJOUTER UN LIKE
+// ===============================
+
+async function addLike(postId){
+
+if(localStorage.getItem("liked-" + postId)){
+    return;
+}
+
+const response = await fetch(
+
+SUPABASE_URL + "/rest/v1/likes",
+
+{
+
+method:"POST",
+
+headers:{
+
+"Content-Type":"application/json",
+
+"apikey":SUPABASE_KEY
+
+},
+
+body:JSON.stringify({
+
+post_id:postId
+
+})
+
+}
+
+);
+
+
+if(response.ok){
+
+const heart = document.getElementById("heart-" + postId);
+
+if(heart){
+
+heart.textContent="♥";
+
+heart.style.color="#C8102E";
+
+}
+
+localStorage.setItem("liked-" + postId, "true");
+
+loadLikes(postId);
+
+}
+
+else{
+
+console.log(await response.text());
+
+}
+
+}
+
+// ===============================
+// GESTION COMMENTAIRES ADMIN
+// ===============================
+
+
+async function loadAdminComments(){
+
+const token = localStorage.getItem("supabase_token");
+
+
+const response = await fetch(
+
+SUPABASE_URL + `/rest/v1/comments?select=*,posts(title)&order=created_at.desc&limit=${limit}&offset=${commentsPage * limit}`,
+
+{
+
+headers:{
+
+"apikey":SUPABASE_KEY,
+
+"Authorization":"Bearer "+token
+
+}
+
+}
+
+);
+
+
+const comments = await response.json();
+
+
+const container = document.getElementById("adminCommentsList");
+
+
+if(!container) return;
+
+
+if(commentsPage === 0){
+
+container.innerHTML="";
+
+}
+
+
+comments.forEach(comment=>{
+
+
+container.innerHTML += `
+
+<article class="comment">
+
+<h3>${comment.name}</h3>
+
+<p><strong>Article :</strong> ${comment.posts ? comment.posts.title : "Article supprimé"}</p>
+
+<p>${comment.message}</p>
+
+<p>
+${new Date(comment.created_at).toLocaleDateString("fr-FR")}
+</p>
+
+<button onclick="showReplyBox(${comment.id})">
+Répondre
+</button>
+
+<div id="replyBox-${comment.id}" style="display:none;">
+
+<textarea id="reply-${comment.id}" placeholder="Réponse UPS"></textarea>
+
+<button onclick="sendReply(${comment.id})">
+Envoyer la réponse
+</button>
+
+</div>
+
+<button onclick="deleteComment(${comment.id})">
+Supprimer
+</button>
+
+</article>
+
+`;
+
+
+});
+
+
+}
+
+
+if(window.location.pathname.includes("admin-commentaires.html")){
+
+loadAdminComments();
+
+}
+
+// ===============================
+// SUPPRIMER COMMENTAIRE ADMIN
+// ===============================
+
+async function deleteComment(id){
+
+const confirmation = confirm(
+"Supprimer ce commentaire ?"
+);
+
+
+if(!confirmation){
+return;
+}
+
+
+const token = localStorage.getItem("supabase_token");
+
+
+const response = await fetch(
+
+SUPABASE_URL + "/rest/v1/comments?id=eq."+id,
+
+{
+
+method:"DELETE",
+
+headers:{
+
+"apikey":SUPABASE_KEY,
+
+"Authorization":"Bearer "+token
+
+}
+
+}
+
+);
+
+
+if(response.ok){
+
+const message = document.getElementById("adminMessage");
+
+if(message){
+
+message.textContent = "Commentaire supprimé avec succès.";
+
+message.style.color = "#00853F";
+
+}
+
+commentsPage = 0;
+
+loadAdminComments();
+
+}
+
+else{
+
+const message = document.getElementById("adminMessage");
+
+if(message){
+
+message.textContent = "Erreur lors de la suppression.";
+
+message.style.color = "#C8102E";
+
+}
+
+console.log(await response.text());
+
+}
+
+}
+
+// ===============================
+// AFFICHER LA ZONE DE REPONSE
+// ===============================
+
+function showReplyBox(id){
+
+const box = document.getElementById("replyBox-" + id);
+
+if(box){
+
+if(box.style.display === "none"){
+
+box.style.display = "block";
+
+}
+
+else{
+
+box.style.display = "none";
+
+}
+
+}
+
+}
+
+
+// ===============================
+// ENVOYER REPONSE UPS
+// ===============================
+
+async function sendReply(id){
+
+const reply = document.getElementById("reply-" + id).value;
+
+
+if(!reply.trim()){
+
+const message = document.getElementById("adminMessage");
+
+if(message){
+
+message.textContent = "Écris une réponse avant d'envoyer.";
+
+message.style.color = "#C8102E";
+
+}
+
+return;
+
+}
+
+const token = localStorage.getItem("supabase_token");
+
+
+const response = await fetch(
+
+SUPABASE_URL + "/rest/v1/comments?id=eq." + id,
+
+{
+
+method:"PATCH",
+
+headers:{
+
+"Content-Type":"application/json",
+
+"apikey":SUPABASE_KEY,
+
+"Authorization":"Bearer " + token
+
+},
+
+body:JSON.stringify({
+
+admin_reply: reply
+
+})
+
+}
+
+);
+
+if(response.ok){
+
+const message = document.getElementById("adminMessage");
+
+if(message){
+
+message.textContent = "Réponse publiée avec succès.";
+
+message.style.color = "#00853F";
+
+}
+
+commentsPage = 0;
+
+loadAdminComments();
+
+}
+
+else{
+
+const message = document.getElementById("adminMessage");
+
+if(message){
+
+message.textContent = "Erreur lors de la réponse.";
+
+message.style.color = "#C8102E";
+
+}
+
+console.log(await response.text());
+
+}
+
+}
+
+function sharePost(title){
+
+if(navigator.share){
+
+navigator.share({
+
+title:title,
+
+url:window.location.href
+
+});
+
+}
+
+else{
+
+copyPostLink();
+
+}
+
+}
+
+
+function copyPostLink(){
+
+navigator.clipboard.writeText(window.location.href);
+
+
+const message = document.createElement("div");
+
+message.textContent = "Lien copié !";
+
+message.className = "copy-message";
+
+document.body.appendChild(message);
+
+
+setTimeout(()=>{
+
+message.remove();
+
+},2500);
 
 }

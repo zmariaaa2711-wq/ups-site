@@ -612,3 +612,281 @@ margin:10px auto;
 max-width:900px;
 
 }
+
+.news-button{
+
+display:inline-block;
+
+margin-top:18px;
+
+background:#C8102E;
+
+color:white;
+
+padding:14px 28px;
+
+border-radius:30px;
+
+text-decoration:none;
+
+font-weight:600;
+
+}
+
+/* ===============================
+   ACTUALITES
+=============================== */
+
+.actualites-page{
+    max-width:900px;
+    margin:auto;
+    padding:40px 20px;
+}
+
+
+.post{
+
+    background:white;
+    padding:25px;
+    margin:25px 0;
+    border-radius:12px;
+    box-shadow:0 4px 15px rgba(0,0,0,0.08);
+
+}
+
+
+.post h2{
+
+    margin-top:0;
+
+}
+
+
+.post-image{
+
+    width:100%;
+    max-height:450px;
+    object-fit:cover;
+    border-radius:10px;
+    margin:15px 0;
+
+}
+
+.actualites-page h2{
+    background: linear-gradient(
+        90deg,
+        #00853F 20%,
+        #00853F 10%,
+        #FDEF42 50%,
+        #C8102E 70%
+    );
+
+    background-clip:text;
+    -webkit-background-clip:text;
+
+    color:transparent;
+    -webkit-text-fill-color:transparent;
+}
+
+nav a{
+    color:#111;
+}
+
+nav a:hover{
+    color:#00853F;
+}
+
+/* ===============================
+   COMMENTAIRES
+=============================== */
+
+.comments {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 2px solid #ddd;
+}
+
+.comments h3 {
+    color: #00853F;
+    margin-bottom: 15px;
+}
+
+.comment {
+
+    background:white;
+
+    padding:15px;
+
+    border-radius:10px;
+
+    margin:12px 0;
+
+    border:1px solid #ddd;
+
+}
+
+.comment strong {
+    color:#C8102E;
+}
+
+/* ===============================
+   LIKES
+=============================== */
+
+.likes {
+    text-align:right;
+    margin-top:20px;
+}
+
+.likeButton {
+    width:auto;
+    background:none;
+    color:#111;
+    padding:5px 10px;
+    font-size:22px;
+    border:none;
+    cursor:pointer;
+}
+
+.likeButton:hover {
+    transform:scale(1.1);
+}
+
+.liked {
+    color:#C8102E;
+}
+
+
+.comment strong{
+
+color:#000;
+font-weight:700;
+
+}
+
+.comment p{
+
+color:#000;
+font-weight:400;
+
+}
+
+.adminReply{
+
+margin-top:12px;
+padding:14px;
+background:#f5f5f5;
+border-left:4px solid #00853F;
+border-radius:8px;
+
+}
+
+.adminReplyHeader{
+
+color:#C8102E;
+font-weight:700;
+margin-bottom:6px;
+
+}
+
+.adminReply p{
+
+color:#000;
+font-weight:400;
+margin:0;
+}
+
+.share-buttons{
+
+margin-top:15px;
+display:flex;
+gap:10px;
+flex-wrap:wrap;
+
+}
+
+
+.share-buttons a,
+.share-buttons button{
+
+background:#00853F;
+color:white;
+padding:8px 15px;
+border-radius:20px;
+text-decoration:none;
+border:none;
+font-weight:bold;
+cursor:pointer;
+
+}
+
+
+.share-buttons button{
+
+font-size:14px;
+
+}
+
+/* PARTAGE ACTUALITES */
+
+.share-buttons{
+
+margin-top:15px;
+display:flex;
+gap:10px;
+flex-wrap:wrap;
+
+}
+
+
+.share-buttons button{
+
+background:#C8102E;
+color:white;
+
+padding:8px 18px;
+
+border:none;
+
+border-radius:20px;
+
+font-weight:bold;
+
+cursor:pointer;
+
+font-size:14px;
+
+}
+
+
+.share-buttons button:hover{
+
+opacity:0.85;
+
+}
+
+.copy-message{
+
+position:fixed;
+
+bottom:30px;
+
+left:50%;
+
+transform:translateX(-50%);
+
+background:#00853F;
+
+color:white;
+
+padding:12px 25px;
+
+border-radius:25px;
+
+font-weight:bold;
+
+z-index:9999;
+
+box-shadow:0 3px 10px rgba(0,0,0,0.2);
+
+}

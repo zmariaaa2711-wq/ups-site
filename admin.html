@@ -71,6 +71,56 @@ Bienvenue dans l'espace sécurisé UPS.
 
 </div>
 
+<a href="admin-commentaires.html" class="news-button">
+💬 Gérer les commentaires
+</a>
+
+<h2>Publier une actualité</h2>
+
+<form id="postForm">
+
+<input
+id="postTitle"
+type="text"
+placeholder="Titre de l'actualité"
+required>
+
+<textarea
+id="postContent"
+placeholder="Contenu de l'actualité"
+required></textarea>
+
+
+<input
+id="postImage"
+type="file"
+accept="image/*">
+
+<input
+id="postVideo"
+type="text"
+placeholder="Lien vidéo (facultatif)">
+
+<button type="submit">
+Publier l'actualité
+</button>
+
+<p id="postMessage"></p>
+
+</form>
+
+<h2>Actualités publiées</h2>
+
+<div id="postsListAdmin">
+
+Chargement...
+
+</div>
+
+<button id="loadMorePosts">
+Charger plus d'actualités
+</button>
+
 <h2>Membres inscrits</h2>
 
 <div id="membersList">
@@ -97,7 +147,6 @@ Chargement...
 <button id="loadMoreReports">
 Charger plus de signalements
 </button>
-
 
 
 
