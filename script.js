@@ -381,6 +381,249 @@ document.getElementById("contactResponse").textContent =
 }
 
 // ===============================
+// ADHESION MEMBRE
+// ===============================
+
+const membershipForm = document.getElementById("membershipForm");
+
+
+if(membershipForm){
+
+
+membershipForm.addEventListener("submit", async function(e){
+
+
+e.preventDefault();
+
+
+
+const photo = document.getElementById("memberPhoto").files[0];
+
+const idFront = document.getElementById("idCardFront").files[0];
+
+const idBack = document.getElementById("idCardBack").files[0];
+
+
+
+let photoUrl = null;
+
+let idFrontUrl = null;
+
+let idBackUrl = null;
+
+
+
+async function uploadFile(file, bucket){
+
+
+const cleanName = file.name
+.replace(/[^a-zA-Z0-9.-]/g, "-");
+
+const fileName = Date.now() + "-" + cleanName;
+
+
+
+const upload = await fetch(
+
+SUPABASE_URL + "/storage/v1/object/" + bucket + "/" + fileName,
+
+{
+
+method:"POST",
+
+headers:{
+
+"apikey":SUPABASE_KEY,
+
+"Authorization":"Bearer " + SUPABASE_KEY,
+
+"Content-Type":file.type
+
+},
+
+body:file
+
+}
+
+);
+
+
+
+if(upload.ok){
+
+if(bucket === "member_photos"){
+
+return SUPABASE_URL +
+"/storage/v1/object/public/" +
+bucket +
+"/" +
+fileName;
+
+}
+
+else{
+
+return fileName;
+
+}
+
+}
+
+
+else{
+
+
+console.log(await upload.text());
+
+return null;
+
+
+}
+
+
+}
+
+
+
+
+if(photo){
+
+photoUrl = await uploadFile(photo,"member_photos");
+
+}
+
+
+if(idFront){
+
+idFrontUrl = await uploadFile(idFront,"identity_documents");
+
+}
+
+
+if(idBack){
+
+idBackUrl = await uploadFile(idBack,"identity_documents");
+
+}
+
+
+
+const data = {
+
+
+first_name:
+document.getElementById("memberFirstName").value,
+
+
+last_name:
+document.getElementById("memberLastName").value,
+
+
+birth_date:
+document.getElementById("memberBirthDate").value,
+
+
+profession:
+document.getElementById("memberProfession").value,
+
+
+email:
+document.getElementById("memberEmail").value,
+
+
+phone:
+document.getElementById("memberPhone").value,
+
+
+country:
+document.getElementById("memberCountry").value,
+
+
+city:
+document.getElementById("memberCity").value,
+
+
+profile_photo_url:
+photoUrl,
+
+
+id_card_front_url:
+idFrontUrl,
+
+
+id_card_back_url:
+idBackUrl,
+
+
+status:"En attente"
+
+
+};
+
+
+
+const response = await fetch(
+
+SUPABASE_URL + "/rest/v1/membership_requests",
+
+{
+
+method:"POST",
+
+headers:{
+
+"Content-Type":"application/json",
+
+"apikey":SUPABASE_KEY
+
+},
+
+body:JSON.stringify(data)
+
+}
+
+);
+
+
+
+const message = document.getElementById("membershipMessage");
+
+
+
+if(response.ok){
+
+message.textContent =
+"Votre demande d'adhésion a bien été prise en compte. Notre équipe va étudier votre demande et vous recontactera prochainement afin de finaliser votre adhésion.";
+
+message.style.color="#00853F";
+
+membershipForm.reset();
+
+}
+
+
+else{
+
+
+console.log(await response.text());
+
+
+message.textContent =
+"Une erreur est survenue.";
+
+
+message.style.color="#C8102E";
+
+
+}
+
+
+});
+
+
+}
+
+// ===============================
 // CONNEXION ADMIN
 // ===============================
 
@@ -2030,5 +2273,274 @@ setTimeout(()=>{
 message.remove();
 
 },2500);
+
+}
+
+// ===============================
+// DEMANDES D'ADHÉSION ADMIN
+// ===============================
+
+
+async function loadMembershipRequests(){
+
+
+const token = localStorage.getItem("supabase_token");
+
+
+const response = await fetch(
+
+SUPABASE_URL + "/rest/v1/membership_requests?select=*&order=created_at.desc",
+
+{
+
+headers:{
+
+"apikey":SUPABASE_KEY,
+
+"Authorization":"Bearer " + token
+
+}
+
+}
+
+);
+
+
+
+const requests = await response.json();
+
+
+console.log("DEMANDES ADHESION :", requests);
+
+console.log(requests.map(r => r.id));
+
+
+
+const container = document.getElementById("membershipRequestsList");
+
+
+
+if(!container) return;
+
+
+
+container.innerHTML = "";
+
+
+
+if(!Array.isArray(requests) || requests.length === 0){
+
+
+container.innerHTML = "<p>Aucune demande pour le moment.</p>";
+
+return;
+
+
+}
+
+
+
+requests.forEach(request=>{
+
+
+container.innerHTML += `
+
+
+<article class="card">
+
+
+<h3>
+${request.first_name} ${request.last_name}
+</h3>
+
+
+<p>
+📧 ${request.email}
+</p>
+
+
+<p>
+📞 ${request.phone}
+</p>
+
+
+<p>
+🌍 ${request.country} - ${request.city}
+</p>
+
+
+<p>
+Profession : ${request.profession}
+</p>
+
+
+<p>
+Statut : ${request.status}
+</p>
+
+
+
+${request.profile_photo_url ?
+
+`
+<img src="${request.profile_photo_url}" width="120">
+`
+
+:
+
+""
+
+}
+
+
+
+<button onclick="validateMembership(${request.id})">
+
+✅ Valider
+
+</button>
+
+
+
+<button onclick="rejectMembership(${request.id})">
+
+❌ Refuser
+
+</button>
+
+
+
+</article>
+
+
+`;
+
+
+});
+
+
+}
+
+
+
+if(window.location.pathname.includes("admin-demandes.html")){
+
+
+loadMembershipRequests();
+
+
+}
+
+// ===============================
+// VALIDATION DEMANDE ADHESION
+// ===============================
+
+async function validateMembership(id){
+
+console.log("VALIDATION ID :", id);
+
+const token = localStorage.getItem("supabase_token");
+
+console.log("TOKEN :", token);
+
+
+const response = await fetch(
+
+SUPABASE_URL + "/rest/v1/membership_requests?id=eq." + id,
+
+{
+
+method:"PATCH",
+
+headers:{
+
+"Prefer":"return=representation",
+
+"Content-Type":"application/json",
+
+"apikey":SUPABASE_KEY,
+
+"Authorization":"Bearer " + token
+
+},
+
+body:JSON.stringify({
+
+status:"Validé"
+
+}),
+
+
+}
+
+);
+
+
+console.log("REPONSE PATCH :", response.status);
+
+console.log(await response.text());
+
+
+}
+
+
+
+
+// ===============================
+// REFUS DEMANDE ADHESION
+// ===============================
+
+async function rejectMembership(id){
+
+
+const token = localStorage.getItem("supabase_token");
+
+
+const response = await fetch(
+
+SUPABASE_URL + "/rest/v1/membership_requests?id=eq." + id,
+
+{
+
+method:"PATCH",
+
+headers:{
+
+"Content-Type":"application/json",
+
+"apikey":SUPABASE_KEY,
+
+"Authorization":"Bearer " + token
+
+},
+
+body:JSON.stringify({
+
+status:"Refusé"
+
+})
+
+}
+
+);
+
+
+
+if(response.ok){
+
+alert("Demande refusée.");
+
+loadMembershipRequests();
+
+}
+
+else{
+
+console.log(await response.text());
+
+alert("Erreur refus.");
+
+}
+
 
 }

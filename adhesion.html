@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Adhésion officielle - UPS</title>
+
+<link rel="stylesheet" href="styles.css">
+
+</head>
+
+<body>
+
+<header>
+
+<div class="logo">
+<img src="assets/herov1.jpeg" alt="Logo UPS">
+</div>
+
+<div>
+
+<h1>UNIS POUR LE SÉNÉGAL</h1>
+
+<p class="slogan">
+Un peuple. Une voix. Un avenir.
+</p>
+
+</div>
+
+</header>
+
+<section class="hero">
+
+<h2>Demande d'adhésion officielle</h2>
+
+<p>
+
+Rejoignez officiellement <strong>Unis Pour le Sénégal</strong>.
+Après vérification de votre demande, notre équipe vous contactera afin
+de finaliser votre adhésion et l'obtention de votre carte officielle de membre.
+
+</p>
+
+</section>
+
+<section>
+
+<h2>Conditions d'adhésion</h2>
+
+<div class="cards">
+
+<article>
+
+<h3>🪪 Vérification d'identité</h3>
+
+<p>
+
+Une pièce d'identité valide est demandée afin de garantir
+l'authenticité de chaque adhésion.
+
+</p>
+
+</article>
+
+<article>
+
+<h3>📷 Photo récente</h3>
+
+<p>
+
+Votre photo sera utilisée uniquement pour la création
+de votre carte officielle UPS.
+
+</p>
+
+</article>
+
+<article>
+
+<h3>🔒 Confidentialité</h3>
+
+<p>
+
+Vos informations personnelles sont conservées de manière
+sécurisée et ne seront jamais rendues publiques.
+
+</p>
+
+</article>
+
+</div>
+
+</section>
+
+<section>
+
+<h2>Informations du membre</h2>
+<form id="membershipForm">
+
+
+<input
+type="text"
+id="memberFirstName"
+placeholder="Prénom"
+required>
+
+
+<input
+type="text"
+id="memberLastName"
+placeholder="Nom"
+required>
+
+
+<label>
+Date de naissance
+</label>
+
+<input
+type="date"
+id="memberBirthDate"
+required>
+
+
+<input
+type="text"
+id="memberProfession"
+placeholder="Profession / Activité"
+required>
+
+
+<input
+type="email"
+id="memberEmail"
+placeholder="Adresse e-mail"
+required>
+
+
+<input
+type="tel"
+id="memberPhone"
+placeholder="Téléphone"
+required>
+
+
+<input
+type="text"
+id="memberCountry"
+placeholder="Pays"
+required>
+
+
+<input
+type="text"
+id="memberCity"
+placeholder="Ville / Région"
+required>
+
+
+
+<h3>Documents nécessaires</h3>
+
+
+<label>
+📷 Photo récente
+</label>
+
+<input
+type="file"
+id="memberPhoto"
+accept="image/*"
+required>
+
+
+
+<label>
+🪪 Carte d'identité - Recto
+</label>
+
+<input
+type="file"
+id="idCardFront"
+accept="image/*,.pdf"
+required>
+
+
+
+<label>
+🪪 Carte d'identité - Verso
+</label>
+
+<input
+type="file"
+id="idCardBack"
+accept="image/*,.pdf"
+required>
+
+
+
+<label class="checkbox">
+
+<input
+type="checkbox"
+id="memberConfirm"
+required>
+
+Je certifie que les informations fournies sont exactes.
+
+</label>
+
+
+
+<button type="submit">
+
+Envoyer ma demande d'adhésion
+
+</button>
+
+
+<p id="membershipMessage"></p>
+
+
+</form>
+
+<div id="membershipSuccess" class="success-message" style="display:none;">
+
+<h3>✅ Votre demande d'adhésion a bien été reçue</h3>
+
+<p>
+Merci pour votre intérêt envers UPS — Unis Pour le Sénégal.
+</p>
+
+<p>
+Votre demande sera étudiée par notre équipe.
+Vous serez contacté(e) ultérieurement afin de finaliser votre adhésion et recevoir votre carte de membre.
+</p>
+
+</div>
+
+
+</section>
+<footer>
+
+<p>
+© UPS — Unis Pour le Sénégal
+</p>
+
+<p>
+<a href="privacy.html">
+Politique de confidentialité
+</a>
+</p>
+
+<p>
+<a href="mentions-legales.html">
+Mentions légales
+</a>
+</p>
+
+<p>
+<a href="index.html">
+Accueil
+</a>
+</p>
+
+<p>
+<a href="index.html#contact">
+Contact
+</a>
+</p>
+
+</footer>
+
+
+<script src="script.js"></script>
+
+
+</body>
+
+</html>

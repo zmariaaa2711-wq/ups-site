@@ -204,10 +204,13 @@ h2 {
 }
 
 
-.buttons {
-
+.buttons { 
     margin-top:28px;
-
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:20px;
+    flex-wrap:wrap;
 }
 
 
