@@ -2181,7 +2181,9 @@ headers:{
 
 "apikey":SUPABASE_KEY,
 
-"Authorization":"Bearer " + token
+"Authorization":"Bearer " + token,
+
+"Prefer":"return=representation"
 
 },
 
@@ -2346,7 +2348,7 @@ requests.forEach(request=>{
 container.innerHTML += `
 
 
-<article class="card">
+<article class="card ${request.status !== "En attente" ? "treated-request" : ""}">
 
 
 <h3>
@@ -2431,19 +2433,214 @@ loadMembershipRequests();
 
 }
 
-// ===============================
-// VALIDATION DEMANDE ADHESION
-// ===============================
 
-async function validateMembership(id){
 
-console.log("VALIDATION ID :", id);
+async function createOfficialMember(request){
 
 const token = localStorage.getItem("supabase_token");
 
-console.log("TOKEN :", token);
+const memberNumber = "UPS-" + String(request.id).padStart(6,"0");
+
+const data = {
+
+member_number: memberNumber,
+
+first_name: request.first_name,
+
+last_name: request.last_name,
+
+birth_date: request.birth_date,
+
+profession: request.profession,
+
+email: request.email,
+
+phone: request.phone,
+
+country: request.country,
+
+city: request.city,
+
+profile_photo_url: request.profile_photo_url,
+
+joined_at: new Date().toISOString().split("T")[0],
+
+status: "Actif"
+
+};
+
+return await fetch(
+
+SUPABASE_URL + "/rest/v1/official_members",
+
+{
+
+method:"POST",
+
+headers:{
+
+"Content-Type":"application/json",
+
+"apikey":SUPABASE_KEY,
+
+"Authorization":"Bearer " + token
+
+},
+
+body:JSON.stringify(data)
+
+}
+
+);
+
+}
+
+async function validateMembership(id){
+
+const token = localStorage.getItem("supabase_token");
+
+const message = document.getElementById("adminMessage");
+
+// Récupérer la demande
+const requestResponse = await fetch(
+
+SUPABASE_URL + "/rest/v1/membership_requests?id=eq." + id,
+
+{
+
+headers:{
+
+"apikey":SUPABASE_KEY,
+
+"Authorization":"Bearer " + token
+
+}
+
+}
+
+);
+
+const requests = await requestResponse.json();
+
+if(!requests.length){
+
+if(message){
+
+message.textContent="Demande introuvable.";
+
+message.style.color="#C8102E";
+
+}
+
+return;
+
+}
+
+const request = requests[0];
+
+// Ajouter dans official_members
+const createResponse = await createOfficialMember(request);
+
+if(!createResponse.ok){
+
+console.log(await createResponse.text());
+
+if(message){
+
+message.textContent="Erreur lors de la création du membre.";
+
+message.style.color="#C8102E";
+
+}
+
+return;
+
+}
+
+console.log("MEMBRE CREE STATUS :", createResponse.status);
 
 
+// récupérer le membre créé
+const memberResponse = await fetch(
+SUPABASE_URL + "/rest/v1/official_members?member_number=eq." + "UPS-" + String(request.id).padStart(6,"0"),
+{
+headers:{
+"apikey":SUPABASE_KEY,
+"Authorization":"Bearer " + token
+}
+}
+);
+
+
+const members = await memberResponse.json();
+
+if(!members.length){
+    console.log("Membre introuvable après création");
+    return;
+}
+
+
+const member = members[0];
+
+console.log("MEMBRE TROUVE :", member);
+
+if(!member){
+    console.log("Membre non récupéré");
+    return;
+}
+
+console.log("MEMBRE CREE :", member);
+
+const cardResponse = await fetch(
+
+SUPABASE_URL + "/rest/v1/member_cards",
+
+{
+
+method:"POST",
+
+headers:{
+"Content-Type":"application/json",
+"apikey":SUPABASE_KEY,
+"Authorization":"Bearer " + token,
+"Prefer":"return=representation"
+},
+
+body:JSON.stringify({
+
+member_id: member.id,
+
+member_number: "UPS-" + String(request.id).padStart(6,"0"),
+
+card_number: "CARD-" + String(request.id).padStart(6,"0"),
+
+first_name: request.first_name,
+
+last_name: request.last_name,
+
+profession: request.profession,
+
+country: request.country,
+
+card_status: "Active",
+
+downloaded: false,
+
+card_created_at: new Date().toISOString().split("T")[0]
+
+})
+
+}
+
+);
+
+
+console.log("CARTE REPONSE :", cardResponse.status);
+
+const cardError = await cardResponse.text();
+console.log("ERREUR CARTE :", cardError);
+
+// Valider la demande
 const response = await fetch(
 
 SUPABASE_URL + "/rest/v1/membership_requests?id=eq." + id,
@@ -2454,13 +2651,13 @@ method:"PATCH",
 
 headers:{
 
-"Prefer":"return=representation",
-
 "Content-Type":"application/json",
 
 "apikey":SUPABASE_KEY,
 
-"Authorization":"Bearer " + token
+"Authorization":"Bearer " + token,
+
+"Prefer":"return=representation"
 
 },
 
@@ -2468,22 +2665,41 @@ body:JSON.stringify({
 
 status:"Validé"
 
-}),
-
+})
 
 }
 
 );
 
+if(response.ok){
 
-console.log("REPONSE PATCH :", response.status);
+if(message){
 
-console.log(await response.text());
+message.textContent="Demande validée avec succès.";
 
+message.style.color="#00853F";
 
 }
 
+loadMembershipRequests();
 
+}
+
+else{
+
+console.log(await response.text());
+
+if(message){
+
+message.textContent="Erreur lors de la validation.";
+
+message.style.color="#C8102E";
+
+}
+
+}
+
+}
 
 
 // ===============================
@@ -2528,7 +2744,12 @@ status:"Refusé"
 
 if(response.ok){
 
-alert("Demande refusée.");
+const message = document.getElementById("adminMessage");
+
+if(message){
+    message.textContent = "Demande refusée avec succès.";
+    message.style.color = "#C8102E";
+}
 
 loadMembershipRequests();
 
@@ -2544,3 +2765,287 @@ alert("Erreur refus.");
 
 
 }
+
+// ===================================
+// AFFICHER TOUTES LES CARTES MEMBRES
+// ===================================
+
+
+async function loadMemberCards(){
+
+const container = document.getElementById("cardsContainer");
+
+if(!container){
+return;
+}
+
+
+// récupérer les cartes
+const response = await fetch(
+
+SUPABASE_URL +
+"/rest/v1/member_cards?select=*",
+
+{
+headers:{
+"apikey":SUPABASE_KEY
+}
+}
+
+);
+
+console.log("STATUS :", response.status);
+console.log("TEXT :", await response.clone().text());
+
+
+const cards = await response.json();
+
+console.log("CARTES :", cards);
+
+
+if(!Array.isArray(cards)){
+console.log("ERREUR :", cards);
+return;
+}
+
+
+container.innerHTML = "";
+
+
+// pour chaque carte
+for(const card of cards){
+
+
+let photoUrl = null;
+
+// récupérer la photo du membre lié
+
+if(card.member_id){
+
+if(!card.member_id){
+
+console.log("Carte sans membre lié :", card.member_number);
+
+}
+
+const memberResponse = await fetch(
+
+SUPABASE_URL +
+"/rest/v1/official_members?id=eq."+card.member_id+"&select=profile_photo_url",
+
+{
+headers:{
+"apikey":SUPABASE_KEY
+}
+}
+
+);
+
+
+const memberData = await memberResponse.json();
+
+
+console.log("MEMBRE :", memberData);
+console.log("PHOTO :", memberData[0]?.profile_photo_url);
+
+
+if(memberData.length > 0){
+
+photoUrl = memberData[0].profile_photo_url;
+
+}
+
+}
+
+console.log("CARTE EN COURS :", card.id);
+console.log("PHOTO UTILISEE :", photoUrl);
+
+container.insertAdjacentHTML("beforeend", `
+
+
+<div class="member-card" id="card-${card.id}">
+
+<img class="watermark-logo" src="assets/herov1.jpeg">
+
+
+<div class="member-card-header">
+
+
+<img class="main-logo" src="assets/herov1.jpeg">
+
+
+<div class="card-title">
+
+<h1>
+CARTE DE MEMBRE
+</h1>
+
+<p>
+UNI POUR LE SÉNÉGAL
+</p>
+
+</div>
+
+
+</div>
+
+
+
+
+<div class="member-card-body">
+
+
+<div class="member-information">
+
+<h2>
+${card.first_name} ${card.last_name}
+</h2>
+
+<p>
+<strong>N° membre :</strong>
+${card.member_number}
+</p>
+
+<p>
+<strong>N° carte :</strong>
+${card.card_number}
+</p>
+
+<p>
+<strong>Profession :</strong>
+${card.profession}
+</p>
+
+<p>
+<strong>Pays :</strong>
+${card.country}
+</p>
+
+<p>
+<strong>Statut :</strong>
+${card.card_status}
+</p>
+
+<p>
+<strong>Membre depuis :</strong>
+${card.card_created_at}
+</p>
+
+</div>
+
+
+
+<div class="member-photo">
+
+${
+photoUrl
+?
+`<img src="${photoUrl}">`
+:
+"PHOTO"
+}
+
+</div>
+
+
+
+</div>
+
+
+
+<div class="member-card-footer">
+
+<strong>
+MEMBRE OFFICIEL UPS
+</strong>
+
+</div>
+
+</div>
+
+
+<button class="downloadCard" data-card="card-${card.id}">
+Télécharger ma carte PDF
+</button>
+
+`);
+}
+
+}
+
+
+
+if (window.location.pathname.includes("member-card.html")) {
+    loadMemberCards();
+}
+
+document.addEventListener("click", async function(e){
+
+if(e.target.classList.contains("downloadCard")){
+
+
+const button = e.target;
+
+const card = button.previousElementSibling;
+
+
+const image = card.querySelector(".member-photo img");
+
+
+if(image){
+
+    await image.decode().catch(()=>{});
+
+}
+
+
+console.log("CARTE TROUVEE :", card);
+console.log("IMAGE DANS LA CARTE :", image?.src);
+
+console.log("CARD WIDTH CSS :", card.getBoundingClientRect().width);
+console.log("CARD HEIGHT CSS :", card.getBoundingClientRect().height);
+console.log("CARD SCROLL :", card.scrollWidth, card.scrollHeight);
+
+html2canvas(card,{
+    scale:3,
+    useCORS:true,
+    allowTaint:false,
+    backgroundColor:"#f7f7f2",
+    imageTimeout:0,
+    width:card.offsetWidth,
+    height:card.offsetHeight,
+    onclone:(doc)=>{
+        const clonedCard = doc.querySelector(".member-card");
+        clonedCard.style.textShadow="none";
+    }
+}).then(canvas=>{
+
+
+const imgData = canvas.toDataURL("image/png");
+
+
+const pdf = new jspdf.jsPDF({
+    orientation:"landscape",
+    unit:"px",
+    format:[canvas.width, canvas.height]
+});
+
+
+pdf.addImage(
+    imgData,
+    "JPEG",
+    0,
+    0,
+    canvas.width,
+    canvas.height
+);
+
+pdf.save("Carte-membre-UPS.pdf");
+
+
+});
+
+
+}
+
+});

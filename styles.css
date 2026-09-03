@@ -893,3 +893,418 @@ z-index:9999;
 box-shadow:0 3px 10px rgba(0,0,0,0.2);
 
 }
+
+.treated-request{
+    opacity:0.55;
+    background:#e5e5e5;
+}
+
+
+/* ===================================
+   CARTE MEMBRE UPS
+=================================== */
+
+.member-card{
+
+width:1000px;
+height:620px;
+
+position:relative;
+overflow:hidden;
+
+background:#f7f7f2;
+border-radius:30px;
+
+box-shadow:0 15px 40px rgba(0,0,0,0.18);
+
+font-family:Arial, sans-serif;
+
+margin:40px auto;
+
+}
+
+
+/* FILIGRANE LOGO */
+
+.watermark-logo{
+
+position:absolute;
+
+width:100%;
+height:100%;
+
+object-fit:cover;
+
+left:0;
+top:0;
+
+opacity:0.10;
+
+z-index:1;
+
+}
+
+/* HEADER */
+
+.member-card-header{
+
+height:120px;
+
+display:flex;
+
+align-items:center;
+
+padding:30px 50px;
+
+background:linear-gradient(
+135deg,
+#00853F,
+#006b32
+);
+
+color:white;
+
+position:relative;
+
+z-index:2;
+
+}
+
+
+
+.main-logo{
+
+width:83px;
+height:90px;
+
+object-fit:contain;
+
+background:rgb(248, 243, 243);
+
+border-radius:50%;
+
+padding:8px;
+
+}
+
+
+
+.card-title{
+
+margin-left:30px;
+
+}
+
+
+
+.card-title h1{
+
+font-size:34px;
+
+margin:0;
+
+font-weight:800;
+
+letter-spacing:1px;
+
+}
+
+
+
+.card-title p{
+
+font-size:18px;
+
+margin-top:8px;
+
+letter-spacing:2px;
+
+}
+
+
+
+/* CORPS */
+
+.member-card-body{
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:center;
+
+height:390px;
+
+padding:30px 55px;
+
+position:relative;
+
+z-index:2;
+
+}
+
+
+
+/* INFORMATIONS */
+
+.member-information{
+
+max-width:600px;
+
+}
+
+
+
+.member-information h2{
+
+font-size:34px;
+
+color:#00853F;
+
+margin:0 0 15px 0;
+
+font-weight:800;
+
+}
+
+
+
+.member-information p{
+
+font-size:18px;
+
+margin:8px 0;
+
+color:#333;
+
+line-height:1.3;
+
+}
+
+
+
+.member-information strong{
+
+color:#C8102E;
+
+}
+
+
+
+/* PHOTO */
+
+.member-photo{
+    width:220px;
+    height:260px;
+    overflow:hidden;
+}
+
+.member-photo img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    object-position:center;
+    display:block;
+}
+
+
+
+/* FOOTER */
+
+.member-card-footer{
+
+height:80px;
+
+background:#C8102E;
+
+color:white;
+
+display:flex;
+
+align-items:center;
+
+justify-content:space-between;
+
+padding:0 50px;
+
+position:relative;
+
+z-index:2;
+
+}
+
+
+
+.member-card-footer strong{
+
+font-size:22px;
+
+}
+
+
+
+.member-card-footer img{
+    display:none;
+}
+
+
+
+
+/* BOUTON TELECHARGEMENT */
+
+#downloadCard{
+
+display:block;
+
+margin:30px auto;
+
+padding:15px 40px;
+
+border:none;
+
+border-radius:30px;
+
+background:#00853F;
+
+color:white;
+
+font-size:18px;
+
+font-weight:bold;
+
+cursor:pointer;
+
+transition:0.2s;
+
+}
+
+
+#downloadCard:hover{
+
+background:#006b32;
+
+transform:scale(1.03);
+
+}
+
+
+#downloadCard:hover{
+
+opacity:0.85;
+
+}
+
+.member-card{
+    page-break-inside: avoid;
+}
+
+.member-photo{
+    width:220px;
+    height:220px;
+    overflow:hidden;
+    position:relative;
+}
+
+.member-photo img{
+    position:absolute;
+    width:220px;
+    height:220px;
+    max-width:none;
+    object-fit:cover;
+    object-position:center;
+}
+
+.member-card * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+}
+
+
+/* Titre principal carte */
+.member-card .card-title h1 {
+    color: #e6b800 !important; /* jaune UPS */
+}
+
+/* Nom du membre */
+.member-card .member-information h2 {
+    color: #d71920 !important; /* rouge */
+}
+
+
+.member-card h1,
+.member-card h2,
+.member-card p,
+.member-card strong,
+.member-card span {
+    background: transparent !important;
+    background-color: transparent !important;
+}
+
+/* Correction titres carte membre */
+.member-card h1,
+.member-card h2 {
+    background: none !important;
+    background-image: none !important;
+    background-clip: initial !important;
+    -webkit-background-clip: initial !important;
+    color: inherit !important;
+    -webkit-text-fill-color: inherit !important;
+}
+
+
+/* Couleurs carte */
+.member-card .card-title h1 {
+    color:#e6b800 !important;
+    -webkit-text-fill-color:#e6b800 !important;
+}
+
+
+.member-card .member-information h2 {
+    color:#C8102E !important;
+    -webkit-text-fill-color:#C8102E !important;
+}
+
+/* ===============================
+   CORRECTION TITRES CARTE MEMBRE
+   =============================== */
+
+
+/* enlève uniquement le dégradé des textes */
+.member-card h1,
+.member-card h2 {
+    background: none !important;
+    background-image: none !important;
+    -webkit-background-clip: initial !important;
+    background-clip: initial !important;
+    -webkit-text-fill-color: initial !important;
+}
+
+
+/* titre CARTE DE MEMBRE */
+.member-card .card-title h1 {
+    color: #FDEF42 !important;
+    -webkit-text-fill-color: #FDEF42 !important;
+}
+
+
+/* nom du membre */
+.member-card .member-information h2 {
+    color: #C8102E !important;
+    -webkit-text-fill-color: #C8102E !important;
+}
+
+
+/* garder le header vert */
+.member-card .member-card-header {
+    background: linear-gradient(
+        135deg,
+        #00853F,
+        #006b32
+    ) !important;
+}
+
+
+/* garder le footer rouge */
+.member-card .member-card-footer {
+    background:#C8102E !important;
+}
