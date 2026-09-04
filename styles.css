@@ -1308,3 +1308,40 @@ opacity:0.85;
 .member-card .member-card-footer {
     background:#C8102E !important;
 }
+
+
+.paymentButton{
+
+display:inline-block;
+
+margin-top:20px;
+
+padding:15px 30px;
+
+background:#0070ba;
+
+color:white;
+
+text-decoration:none;
+
+font-weight:bold;
+
+border-radius:30px;
+
+}
+
+.paymentButton:hover{
+
+opacity:0.9;
+
+}
+
+.comingSoon{
+
+margin-top:15px;
+
+color:#666;
+
+font-style:italic;
+
+}

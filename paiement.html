@@ -38,63 +38,98 @@ UPS - Unis Pour le Sénégal
 </header>
 
 
-
 <section>
 
 <h2>
 Finaliser votre adhésion
 </h2>
 
-
 <p>
-Votre demande d'adhésion a bien été enregistrée.
+Votre demande d'adhésion a bien été enregistrée avec succès.
 </p>
 
-
 <p>
-Après vérification de vos informations, notre équipe vous contactera afin de vous transmettre les modalités de cotisation et finaliser votre adhésion officielle.
+Pour finaliser votre adhésion à UPS – Unis pour le Sénégal, veuillez effectuer le paiement de votre carte de membre.
+Votre paiement sera vérifié par notre équipe avant la validation définitive de votre adhésion.
 </p>
 
+<p>
+<strong>
+⚠️ Après votre paiement PayPal, n'oubliez pas de revenir sur cette page et de cliquer sur "J'ai effectué mon paiement" afin que votre demande soit mise à jour.
+</strong>
+</p>
 
 <div class="cards">
 
-
 <article>
 
 <h3>
-Paiement
+Paiement de la carte de membre
 </h3>
 
 <p>
-Les moyens de paiement seront bientôt disponibles sur cette page.
+Montant :
+<strong>5€</strong>
 </p>
 
 <p>
-Pour les premières adhésions, notre équipe vous contactera directement par e-mail.
+Choisissez votre moyen de paiement.
+</p>
+
+<a 
+class="paymentButton" 
+id="paypalButton" 
+href="https://www.paypal.com/ncp/payment/AK7P32QU88396"
+target="_blank">
+
+Payer avec PayPal
+
+</a>
+
+<button id="paidButton" class="paymentButton">
+J'ai effectué mon paiement
+</button>
+
+<p id="paymentMessage"></p>
+
+<p class="comingSoon">
+💳 Carte bancaire : bientôt disponible
+</p>
+
+<p class="comingSoon">
+🟠 Orange Money : bientôt disponible
+</p>
+
+<p class="comingSoon">
+🟣 Wave : bientôt disponible
 </p>
 
 </article>
 
-
-
 <article>
 
 <h3>
-Après le paiement
+Après votre paiement
 </h3>
 
 <p>
-Une fois votre cotisation validée, votre adhésion officielle sera finalisée et votre carte de membre pourra être créée.
+Une fois votre paiement effectué, votre demande passera au statut
+<strong>« Payé (à vérifier) »</strong>.
+</p>
+
+<p>
+Notre équipe vérifiera ensuite votre paiement avant de valider définitivement votre adhésion.
+</p>
+
+<p>
+Après validation, votre carte officielle de membre UPS sera créée et mise à votre disposition.
 </p>
 
 </article>
-
 
 </div>
 
-
 </section>
-
 
 
 <footer>
@@ -104,6 +139,89 @@ Un peuple. Une voix. Un avenir.
 </p>
 
 </footer>
+
+<footer> 
+
+<p> 
+Un peuple. Une voix. Un avenir. 
+</p> 
+
+</footer>
+
+
+<script>
+
+const SUPABASE_URL = "https://zrytzmbfspanylozgmwf.supabase.co";
+
+const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpyeXR6bWJmc3Bhbnlsb3pnbXdmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc4NTAwMjIsImV4cCI6MjEwMzQyNjAyMn0.RTmCiHok0XRJlV5bsT_oaf9co7PoDJrao7hRwRvmgD4";
+
+
+const requestId = localStorage.getItem("membership_request_id");
+
+console.log("DEMANDE ADHESION :", requestId);
+
+
+
+document.getElementById("paidButton").addEventListener("click", async function(){
+
+
+const response = await fetch(
+
+SUPABASE_URL + "/rest/v1/membership_requests?id=eq." + requestId,
+
+{
+
+method:"PATCH",
+
+headers:{
+
+"Content-Type":"application/json",
+
+"apikey":SUPABASE_KEY,
+
+"Authorization":"Bearer " + SUPABASE_KEY,
+
+"Prefer":"return=representation"
+
+},
+
+body:JSON.stringify({
+
+payment_status:"Payé (à vérifier)"
+
+})
+
+}
+
+);
+
+
+
+if(response.ok){
+
+document.getElementById("paymentMessage").textContent =
+"Votre paiement a été signalé. Notre équipe va vérifier.";
+
+document.getElementById("paymentMessage").style.color="#00853F";
+
+}
+
+else{
+
+console.log(await response.text());
+
+document.getElementById("paymentMessage").textContent =
+"Erreur lors de la mise à jour.";
+
+}
+
+});
+
+
+</script>
+
+
+</body>
 
 
 </body>

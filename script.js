@@ -76,7 +76,9 @@ country: document.querySelector("#country").value,
 
 city: document.querySelector("#city").value,
 
-participation: document.querySelector("#participation").value
+participation: document.querySelector("#participation").value,
+
+payment_status: "Non payé",
 
 };
 
@@ -552,71 +554,91 @@ idFrontUrl,
 
 
 id_card_back_url:
+
 idBackUrl,
 
 
-status:"En attente"
+status:"En attente",
 
+payment_status:"non payé"
 
 };
 
+console.log(data);
 
+
+
+console.log("URL :", SUPABASE_URL);
+console.log("KEY :", SUPABASE_KEY.substring(0,20));
+console.log("DATA :", data);
+
+console.log("AUTH HEADER AVANT INSERT :", SUPABASE_KEY);
+console.log("TOKEN LOCAL :", localStorage.getItem("supabase_token"));
+
+const testAuth = await fetch(
+SUPABASE_URL + "/rest/v1/membership_requests?select=count",
+{
+headers:{
+"apikey": SUPABASE_KEY
+}
+}
+);
+
+console.log("TEST SANS AUTH :", testAuth.status);
+console.log(await testAuth.text());
 
 const response = await fetch(
-
 SUPABASE_URL + "/rest/v1/membership_requests",
-
 {
-
 method:"POST",
-
 headers:{
-
 "Content-Type":"application/json",
-
-"apikey":SUPABASE_KEY
-
+"apikey":SUPABASE_KEY,
+"Authorization":"Bearer " + SUPABASE_KEY,
+"Prefer":"return=representation"
 },
-
 body:JSON.stringify(data)
-
 }
-
 );
+
+console.log("POST HEADERS TESTÉS");
+console.log("apikey =", SUPABASE_KEY.substring(0,20));
+console.log("auth =", "Bearer " + SUPABASE_KEY.substring(0,20));
 
 
 
 const message = document.getElementById("membershipMessage");
 
 
-
 if(response.ok){
 
-message.textContent =
-"Votre demande d'adhésion a bien été prise en compte. Notre équipe va étudier votre demande et vous recontactera prochainement afin de finaliser votre adhésion.";
+const result = await response.json();
 
-message.style.color="#00853F";
+localStorage.setItem(
+"membership_request_id",
+result[0].id
+);
 
-membershipForm.reset();
+window.location.href = "paiement.html";
 
 }
 
 
 else{
 
+const errorText = await response.text();
 
-console.log(await response.text());
+console.log("===== ERREUR ADHESION =====");
+console.log("STATUS :", response.status);
+console.log("STATUS TEXT :", response.statusText);
+console.log("HEADERS :", [...response.headers.entries()]);
+console.log("REPONSE SUPABASE :", errorText);
 
-
-message.textContent =
-"Une erreur est survenue.";
-
+message.textContent = errorText;
 
 message.style.color="#C8102E";
 
-
 }
-
 
 });
 
@@ -2380,6 +2402,10 @@ Profession : ${request.profession}
 Statut : ${request.status}
 </p>
 
+<p>
+💳 Paiement : ${request.payment_status || "non payé"}
+</p>
+
 
 
 ${request.profile_photo_url ?
@@ -2663,7 +2689,8 @@ headers:{
 
 body:JSON.stringify({
 
-status:"Validé"
+status:"Validé",
+payment_status:"Payé"
 
 })
 
