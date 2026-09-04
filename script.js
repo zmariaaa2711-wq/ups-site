@@ -3050,21 +3050,22 @@ html2canvas(card,{
 
 const imgData = canvas.toDataURL("image/png");
 
-
 const pdf = new jspdf.jsPDF({
     orientation:"landscape",
-    unit:"px",
-    format:[canvas.width, canvas.height]
+    unit:"mm",
+    format:[85.6,54]
 });
 
+
+const margin = 3;
 
 pdf.addImage(
     imgData,
     "JPEG",
-    0,
-    0,
-    canvas.width,
-    canvas.height
+    margin,
+    margin,
+    85.6 - (margin * 2),
+    54 - (margin * 2)
 );
 
 pdf.save("Carte-membre-UPS.pdf");
