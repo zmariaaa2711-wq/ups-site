@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Merci pour votre soutien - UPS</title>
+
+<link rel="stylesheet" href="styles.css">
+
+</head>
+
+<body>
+
+<header>
+
+<h1>UPS</h1>
+
+<p>UNIS POUR LE SÉNÉGAL</p>
+
+</header>
+
+<section class="hero">
+
+<h2>🙏 Merci pour votre soutien !</h2>
+
+<p>
+
+Votre contribution a bien été prise en compte.
+
+<br><br>
+
+Grâce à votre soutien, UPS pourra poursuivre ses actions citoyennes et continuer à construire un Sénégal plus fort, plus juste et tourné vers l'avenir.
+
+</p>
+
+<br>
+
+<a href="index.html" class="btn">
+Retour à l'accueil
+</a>
+
+</section>
+
+<footer>
+
+<p>
+
+© 2026 UPS — Unis pour le Sénégal
+
+</p>
+
+</footer>
+
+</body>
+
+</html>

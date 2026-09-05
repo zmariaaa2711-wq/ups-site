@@ -4,16 +4,20 @@
 
 
 * {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
+
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+
 }
+
 
 
 body {
 
-    font-family: "Montserrat", Arial, sans-serif;
-    color: #111;
+    font-family:"Montserrat", Arial, sans-serif;
+
+    color:#111;
 
     background-image:
     linear-gradient(
@@ -22,42 +26,50 @@ body {
     ),
     url("assets/herov1.jpeg");
 
-    background-size: 70%;
-    background-position: center top;
-    background-attachment: fixed;
+    background-size:70%;
 
-    line-height: 1.6;
+    background-position:center top;
 
-}
+    background-attachment:fixed;
 
-
-
-h1, h2, h3 {
-
-    font-family: "Merriweather", serif;
+    line-height:1.6;
 
 }
 
 
 
-/* HEADER */
+h1,h2,h3 {
+
+    font-family:"Merriweather", serif;
+
+}
+
+
+
+/* ===============================
+HEADER PRINCIPAL
+=============================== */
+
 
 header {
 
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    display:flex;
 
-    padding: 20px;
+    justify-content:space-between;
 
-    border-bottom: 4px solid #C8102E;
+    align-items:center;
 
-    position: sticky;
-    top: 0;
+    padding:20px;
 
-    background: #D4AF37;
+    border-bottom:4px solid #C8102E;
 
-    z-index: 10;
+    position:sticky;
+
+    top:0;
+
+    background:#D4AF37;
+
+    z-index:10;
 
 }
 
@@ -65,10 +77,11 @@ header {
 
 .logo img {
 
-    width: 80px;
-    height: 80px;
+    width:80px;
 
-    object-fit: cover;
+    height:80px;
+
+    object-fit:cover;
 
 }
 
@@ -76,7 +89,7 @@ header {
 
 .logo h1 {
 
-    font-size: 38px;
+    font-size:38px;
 
 }
 
@@ -84,11 +97,21 @@ header {
 
 nav a {
 
-    margin-left: 15px;
+    margin-left:15px;
 
-    text-decoration: none;
+    text-decoration:none;
 
-    font-weight: bold;
+    font-weight:bold;
+
+    color:#111;
+
+}
+
+
+
+nav a:hover {
+
+    color:#00853F;
 
 }
 
@@ -96,7 +119,7 @@ nav a {
 
 .rouge {
 
-    color: #C8102E;
+    color:#C8102E;
 
 }
 
@@ -104,64 +127,69 @@ nav a {
 
 .vert {
 
-    color: #00853F;
+    color:#00853F;
 
 }
 
 
 
-/* TITRES DEGRADE */
+/* ===============================
+TITRES
+=============================== */
 
 
 h1,
 h2 {
 
-    background: linear-gradient(
+    background:linear-gradient(
         90deg,
         #00853F 0%,
         #FDEF42 35%,
         #C8102E 70%
     );
 
-    background-clip: text;
-    -webkit-background-clip: text;
+    background-clip:text;
 
-    color: transparent;
-    -webkit-text-fill-color: transparent;
+    -webkit-background-clip:text;
+
+    color:transparent;
+
+    -webkit-text-fill-color:transparent;
 
 }
-
 
 
 
 .slogan {
 
-    font-family: "Playfair Display", serif;
+    font-family:"Playfair Display",serif;
 
-    font-size: 22px;
+    font-size:22px;
 
-    font-weight: 700;
+    font-weight:700;
 
-    background: linear-gradient(
+    background:linear-gradient(
         90deg,
-        #00853F 0%,
-        #FDEF42 50%,
-        #C8102E 100%
+        #00853F,
+        #FDEF42,
+        #C8102E
     );
 
-    background-clip: text;
-    -webkit-background-clip: text;
+    background-clip:text;
 
-    color: transparent;
-    -webkit-text-fill-color: transparent;
+    -webkit-background-clip:text;
+
+    color:transparent;
+
+    -webkit-text-fill-color:transparent;
 
 }
 
 
 
-
-
-/* HERO */
+/* ===============================
+HERO
+=============================== */
 
 
 .hero {
@@ -183,6 +211,7 @@ h2 {
 }
 
 
+
 .hero h2 {
 
     font-size:42px;
@@ -199,19 +228,26 @@ h2 {
 
     font-size:18px;
 
-    margin:auto;
-
 }
 
 
-.buttons { 
+
+.buttons {
+
     margin-top:28px;
+
     display:flex;
+
     justify-content:center;
+
     align-items:center;
+
     gap:20px;
+
     flex-wrap:wrap;
+
 }
+
 
 
 .buttons a {
@@ -219,8 +255,6 @@ h2 {
     display:inline-block;
 
     padding:14px 25px;
-
-    margin:8px;
 
     border-radius:30px;
 
@@ -244,8 +278,9 @@ h2 {
 
 
 
-
-/* SECTIONS */
+/* ===============================
+SECTIONS
+=============================== */
 
 
 section {
@@ -280,11 +315,9 @@ section > p {
 
 }
 
-
-
-
-
-/* CARTES */
+/* ===============================
+CARTES
+=============================== */
 
 
 .cards {
@@ -323,9 +356,9 @@ article h3 {
 
 
 
-
-
-/* FORMULAIRES */
+/* ===============================
+FORMULAIRES
+=============================== */
 
 
 form {
@@ -382,9 +415,9 @@ button {
 
 
 
-
-
-/* FOOTER */
+/* ===============================
+FOOTER
+=============================== */
 
 
 footer {
@@ -401,9 +434,9 @@ footer {
 
 
 
-
-
-/* MOBILE */
+/* ===============================
+MOBILE
+=============================== */
 
 
 @media(max-width:700px){
@@ -487,8 +520,6 @@ nav a {
 
     font-size:28px;
 
-    margin-bottom:10px;
-
 }
 
 
@@ -497,16 +528,6 @@ nav a {
 
     font-size:15px;
 
-    margin:10px 0;
-
-}
-
-
-
-.hero .buttons {
-
-    margin-top:20px;
-
 }
 
 
@@ -514,8 +535,6 @@ nav a {
 .buttons a {
 
     padding:12px 22px;
-
-    margin:6px;
 
 }
 
@@ -539,10 +558,14 @@ button {
 }
 
 
-
 }
 
-/* DASHBOARD ADMIN */
+
+
+/* ===============================
+DASHBOARD ADMIN
+=============================== */
+
 
 .dashboard {
 
@@ -555,6 +578,7 @@ button {
     flex-wrap:wrap;
 
 }
+
 
 
 .card {
@@ -576,6 +600,7 @@ button {
 }
 
 
+
 .card h3 {
 
     margin-bottom:10px;
@@ -583,6 +608,7 @@ button {
     color:#00853F;
 
 }
+
 
 
 .card p {
@@ -596,123 +622,153 @@ button {
 }
 
 
-.members-header{
 
-font-family: "Merriweather", serif;
+.members-header {
 
-font-size:13px;
+    font-family:"Merriweather",serif;
 
-font-weight:600;
+    font-size:13px;
 
-font-style:italic;
+    font-weight:600;
 
-color:#111;
+    font-style:italic;
 
-text-align:center;
+    color:#111;
 
-margin:10px auto;
+    text-align:center;
 
-max-width:900px;
+    margin:10px auto;
+
+    max-width:900px;
 
 }
 
-.news-button{
 
-display:inline-block;
 
-margin-top:18px;
+.news-button {
 
-background:#C8102E;
+    display:inline-block;
 
-color:white;
+    margin-top:18px;
 
-padding:14px 28px;
+    background:#C8102E;
 
-border-radius:30px;
+    color:white;
 
-text-decoration:none;
+    padding:14px 28px;
 
-font-weight:600;
+    border-radius:30px;
+
+    text-decoration:none;
+
+    font-weight:600;
 
 }
 
 /* ===============================
-   ACTUALITES
+ACTUALITES
 =============================== */
 
-.actualites-page{
+
+.actualites-page {
+
     max-width:900px;
+
     margin:auto;
+
     padding:40px 20px;
+
 }
 
 
-.post{
+
+.post {
 
     background:white;
+
     padding:25px;
+
     margin:25px 0;
+
     border-radius:12px;
+
     box-shadow:0 4px 15px rgba(0,0,0,0.08);
 
 }
 
 
-.post h2{
+
+.post h2 {
 
     margin-top:0;
 
 }
 
 
-.post-image{
+
+.post-image {
 
     width:100%;
+
     max-height:450px;
+
     object-fit:cover;
+
     border-radius:10px;
+
     margin:15px 0;
 
 }
 
-.actualites-page h2{
-    background: linear-gradient(
+
+
+.actualites-page h2 {
+
+    background:linear-gradient(
         90deg,
-        #00853F 20%,
-        #00853F 10%,
-        #FDEF42 50%,
-        #C8102E 70%
+        #00853F,
+        #FDEF42,
+        #C8102E
     );
 
     background-clip:text;
+
     -webkit-background-clip:text;
 
     color:transparent;
+
     -webkit-text-fill-color:transparent;
+
 }
 
-nav a{
-    color:#111;
-}
 
-nav a:hover{
-    color:#00853F;
-}
 
 /* ===============================
-   COMMENTAIRES
+COMMENTAIRES
 =============================== */
 
+
 .comments {
-    margin-top: 30px;
-    padding-top: 20px;
-    border-top: 2px solid #ddd;
+
+    margin-top:30px;
+
+    padding-top:20px;
+
+    border-top:2px solid #ddd;
+
 }
 
+
+
 .comments h3 {
-    color: #00853F;
-    margin-bottom: 15px;
+
+    color:#00853F;
+
+    margin-bottom:15px;
+
 }
+
+
 
 .comment {
 
@@ -728,364 +784,477 @@ nav a:hover{
 
 }
 
+
+
 .comment strong {
-    color:#C8102E;
+
+    color:#000;
+
+    font-weight:700;
+
 }
+
+
+
+.comment p {
+
+    color:#000;
+
+    font-weight:400;
+
+}
+
+
+
+/* REPONSE ADMIN */
+
+
+.adminReply {
+
+    margin-top:12px;
+
+    padding:14px;
+
+    background:#f5f5f5;
+
+    border-left:4px solid #00853F;
+
+    border-radius:8px;
+
+}
+
+
+
+.adminReplyHeader {
+
+    color:#C8102E;
+
+    font-weight:700;
+
+    margin-bottom:6px;
+
+}
+
+
+
+.adminReply p {
+
+    color:#000;
+
+    margin:0;
+
+}
+
+
 
 /* ===============================
-   LIKES
+LIKES
 =============================== */
 
+
 .likes {
+
     text-align:right;
+
     margin-top:20px;
+
 }
+
+
 
 .likeButton {
+
     width:auto;
+
     background:none;
+
     color:#111;
+
     padding:5px 10px;
+
     font-size:22px;
+
     border:none;
+
     cursor:pointer;
+
 }
+
+
 
 .likeButton:hover {
+
     transform:scale(1.1);
+
 }
+
+
 
 .liked {
+
     color:#C8102E;
-}
-
-
-.comment strong{
-
-color:#000;
-font-weight:700;
-
-}
-
-.comment p{
-
-color:#000;
-font-weight:400;
-
-}
-
-.adminReply{
-
-margin-top:12px;
-padding:14px;
-background:#f5f5f5;
-border-left:4px solid #00853F;
-border-radius:8px;
-
-}
-
-.adminReplyHeader{
-
-color:#C8102E;
-font-weight:700;
-margin-bottom:6px;
-
-}
-
-.adminReply p{
-
-color:#000;
-font-weight:400;
-margin:0;
-}
-
-.share-buttons{
-
-margin-top:15px;
-display:flex;
-gap:10px;
-flex-wrap:wrap;
 
 }
 
 
-.share-buttons a,
-.share-buttons button{
 
-background:#00853F;
-color:white;
-padding:8px 15px;
-border-radius:20px;
-text-decoration:none;
-border:none;
-font-weight:bold;
-cursor:pointer;
-
-}
+/* ===============================
+PARTAGE ACTUALITES
+=============================== */
 
 
-.share-buttons button{
+.share-buttons {
 
-font-size:14px;
+    margin-top:15px;
 
-}
+    display:flex;
 
-/* PARTAGE ACTUALITES */
+    gap:10px;
 
-.share-buttons{
-
-margin-top:15px;
-display:flex;
-gap:10px;
-flex-wrap:wrap;
+    flex-wrap:wrap;
 
 }
 
 
-.share-buttons button{
 
-background:#C8102E;
-color:white;
+.share-buttons button,
+.share-buttons a {
 
-padding:8px 18px;
+    background:#C8102E;
 
-border:none;
+    color:white;
 
-border-radius:20px;
+    padding:8px 18px;
 
-font-weight:bold;
+    border:none;
 
-cursor:pointer;
+    border-radius:20px;
 
-font-size:14px;
+    text-decoration:none;
+
+    font-weight:bold;
+
+    cursor:pointer;
+
+    font-size:14px;
+
+}
+
+
+
+.share-buttons button:hover {
+
+    opacity:0.85;
 
 }
 
 
-.share-buttons button:hover{
 
-opacity:0.85;
+.copy-message {
 
-}
+    position:fixed;
 
-.copy-message{
+    bottom:30px;
 
-position:fixed;
+    left:50%;
 
-bottom:30px;
+    transform:translateX(-50%);
 
-left:50%;
+    background:#00853F;
 
-transform:translateX(-50%);
+    color:white;
 
-background:#00853F;
+    padding:12px 25px;
 
-color:white;
+    border-radius:25px;
 
-padding:12px 25px;
+    font-weight:bold;
 
-border-radius:25px;
+    z-index:9999;
 
-font-weight:bold;
-
-z-index:9999;
-
-box-shadow:0 3px 10px rgba(0,0,0,0.2);
+    box-shadow:0 3px 10px rgba(0,0,0,0.2);
 
 }
 
-.treated-request{
+
+
+/* ===============================
+DEMANDES TRAITEES
+=============================== */
+
+
+.treated-request {
+
     opacity:0.55;
-    background:#e5e5e5;
-}
 
+    background:#e5e5e5;
+
+}
 
 /* ===================================
-   CARTE MEMBRE UPS
+CARTE MEMBRE UPS
 =================================== */
 
-.member-card{
 
-width:1000px;
-height:620px;
+.member-card {
 
-position:relative;
-overflow:hidden;
+    width:1000px;
 
-background:#f7f7f2;
-border-radius:30px;
+    height:620px;
 
-box-shadow:0 15px 40px rgba(0,0,0,0.18);
+    position:relative;
 
-font-family:Arial, sans-serif;
+    overflow:hidden;
 
-margin:40px auto;
+    background:#f7f7f2;
+
+    border-radius:30px;
+
+    box-shadow:0 15px 40px rgba(0,0,0,0.18);
+
+    font-family:"Montserrat", Arial, sans-serif;
+
+    margin:40px auto;
 
 }
+
 
 
 /* FILIGRANE LOGO */
 
-.watermark-logo{
 
-position:absolute;
+.watermark-logo {
 
-width:100%;
-height:100%;
+    position:absolute;
 
-object-fit:cover;
+    width:100%;
 
-left:0;
-top:0;
+    height:100%;
 
-opacity:0.10;
+    object-fit:cover;
 
-z-index:1;
+    left:0;
 
-}
+    top:0;
 
-/* HEADER */
+    opacity:0.10;
 
-.member-card-header{
-
-height:120px;
-
-display:flex;
-
-align-items:center;
-
-padding:30px 50px;
-
-background:linear-gradient(
-135deg,
-#00853F,
-#006b32
-);
-
-color:white;
-
-position:relative;
-
-z-index:2;
+    z-index:1;
 
 }
 
 
 
-.main-logo{
-
-width:83px;
-height:90px;
-
-object-fit:contain;
-
-background:rgb(248, 243, 243);
-
-border-radius:50%;
-
-padding:8px;
-
-}
+/* ===================================
+HEADER CARTE MEMBRE FINAL
+=================================== */
 
 
+.member-card .member-card-header {
 
-.card-title{
+    height:120px;
 
-margin-left:30px;
+    display:flex;
 
-}
+    align-items:center;
 
+    justify-content:center;
 
+    position:relative;
 
-.card-title h1{
+    z-index:2;
 
-font-size:34px;
-
-margin:0;
-
-font-weight:800;
-
-letter-spacing:1px;
+    background:linear-gradient(
+        135deg,
+        #00853F,
+        #006b32
+    );
 
 }
 
 
 
-.card-title p{
-
-font-size:18px;
-
-margin-top:8px;
-
-letter-spacing:2px;
-
-}
+/* LOGO GAUCHE */
 
 
+.member-card .main-logo {
 
-/* CORPS */
+    position:absolute;
 
-.member-card-body{
+    left:45px;
 
-display:flex;
+    width:75px;
 
-justify-content:space-between;
+    height:75px;
 
-align-items:center;
-
-height:390px;
-
-padding:30px 55px;
-
-position:relative;
-
-z-index:2;
+    object-fit:contain;
 
 }
 
 
 
-/* INFORMATIONS */
-
-.member-information{
-
-max-width:600px;
-
-}
+/* TEXTE HEADER */
 
 
+.member-card .card-title {
 
-.member-information h2{
+    text-align:center;
 
-font-size:34px;
-
-color:#00853F;
-
-margin:0 0 15px 0;
-
-font-weight:800;
+    margin:0;
+    
 
 }
 
 
 
-.member-information p{
+/* UPS */
 
-font-size:18px;
+.member-card .card-title p:first-of-type {
 
-margin:8px 0;
+    font-family:"Merriweather", serif !important;
 
-color:#333;
+    font-size:17px !important;
 
-line-height:1.3;
+    font-style:italic !important;
+
+    font-weight:700 !important;
+
+    letter-spacing:1px !important;
+
+    margin:5px 0 !important;
+
+    color:white !important;
+
+    -webkit-text-fill-color:white !important;
 
 }
 
 
 
-.member-information strong{
+/* UNIS POUR LE SENEGAL */
 
-color:#C8102E;
+
+.member-card .card-title p:first-of-type {
+
+    font-size:17px;
+
+    font-weight:700;
+
+    letter-spacing:2px;
+
+    margin:5px 0;
+
+    color:white;
+
+    background:none;
+
+    -webkit-text-fill-color:white;
+
+}
+
+
+
+/* CARTE DE MEMBRE */
+
+
+.member-card .card-title p:last-of-type {
+
+    font-size:14px;
+
+    font-weight:600;
+
+    letter-spacing:2px;
+
+    text-transform:uppercase;
+
+    margin:0;
+
+    color:white;
+
+    background:none;
+
+    -webkit-text-fill-color:white;
+
+}
+
+
+
+/* ===================================
+CORPS CARTE
+=================================== */
+
+
+.member-card-body {
+
+    height:390px;
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    padding:30px 55px;
+
+    position:relative;
+
+    z-index:2;
+
+}
+
+
+
+.member-information {
+
+    max-width:600px;
+
+}
+
+
+
+.member-section-title {
+
+    font-size:28px;
+
+    font-family:"Playfair Display",serif;
+
+    margin-bottom:20px;
+
+    color:#00853F;
+
+}
+
+
+
+.member-name {
+
+    font-size:34px;
+
+    font-weight:800;
+
+    margin-bottom:15px;
+
+    color:#C8102E;
+
+}
+
+
+
+.member-information p {
+
+    font-size:18px;
+
+    margin:8px 0;
+
+    color:#333;
+
+}
+
+
+
+.member-information strong {
+
+    color:#C8102E;
 
 }
 
@@ -1093,232 +1262,347 @@ color:#C8102E;
 
 /* PHOTO */
 
-.member-photo{
+
+.member-photo {
+
     width:220px;
+
     height:260px;
+
     overflow:hidden;
+
 }
 
-.member-photo img{
+
+
+.member-photo img {
+
     width:100%;
+
     height:100%;
+
     object-fit:cover;
-    object-position:center;
-    display:block;
-}
-
-
-
-/* FOOTER */
-
-.member-card-footer{
-
-height:80px;
-
-background:#C8102E;
-
-color:white;
-
-display:flex;
-
-align-items:center;
-
-justify-content:space-between;
-
-padding:0 50px;
-
-position:relative;
-
-z-index:2;
 
 }
 
 
 
-.member-card-footer strong{
-
-font-size:22px;
-
-}
+/* ===================================
+FOOTER CARTE
+=================================== */
 
 
+.member-card-footer {
 
-.member-card-footer img{
-    display:none;
-}
+    height:80px;
 
+    background:#C8102E;
 
+    color:white;
 
+    display:flex;
 
-/* BOUTON TELECHARGEMENT */
+    align-items:center;
 
-#downloadCard{
+    justify-content:center;
 
-display:block;
+    padding:0 50px;
 
-margin:30px auto;
-
-padding:15px 40px;
-
-border:none;
-
-border-radius:30px;
-
-background:#00853F;
-
-color:white;
-
-font-size:18px;
-
-font-weight:bold;
-
-cursor:pointer;
-
-transition:0.2s;
-
-}
-
-
-#downloadCard:hover{
-
-background:#006b32;
-
-transform:scale(1.03);
-
-}
-
-
-#downloadCard:hover{
-
-opacity:0.85;
-
-}
-
-.member-card{
-    page-break-inside: avoid;
-}
-
-.member-photo{
-    width:220px;
-    height:220px;
-    overflow:hidden;
     position:relative;
-}
 
-.member-photo img{
-    position:absolute;
-    width:220px;
-    height:220px;
-    max-width:none;
-    object-fit:cover;
-    object-position:center;
-}
+    z-index:2;
 
-.member-card * {
-    -webkit-print-color-adjust: exact !important;
-    print-color-adjust: exact !important;
 }
 
 
-/* Titre principal carte */
+
+.member-card-footer strong {
+
+    font-size:22px;
+
+}
+
+
+
+/* ===================================
+BOUTON TELECHARGEMENT
+=================================== */
+
+
+#downloadCard {
+
+    display:block;
+
+    margin:30px auto;
+
+    padding:15px 40px;
+
+    border:none;
+
+    border-radius:30px;
+
+    background:#00853F;
+
+    color:white;
+
+    font-size:18px;
+
+    font-weight:bold;
+
+    cursor:pointer;
+
+}
+
+
+
+#downloadCard:hover {
+
+    background:#006b32;
+
+    transform:scale(1.03);
+
+}
+
+
+
+/* ===================================
+RESPONSIVE CARTE
+=================================== */
+
+
+@media(max-width:700px){
+
+
+.member-card {
+
+    width:95%;
+
+    height:auto;
+
+}
+
+
+
+.member-card .member-card-header {
+
+    height:100px;
+
+}
+
+
+
+.member-card .main-logo {
+
+    left:15px;
+
+    width:55px;
+
+    height:55px;
+
+}
+
+
+
 .member-card .card-title h1 {
-    color: #e6b800 !important; /* jaune UPS */
+
+    font-size:32px;
+
 }
 
-/* Nom du membre */
-.member-card .member-information h2 {
-    color: #d71920 !important; /* rouge */
+
+
+.member-card-body {
+
+    height:auto;
+
+    flex-direction:column;
+
+    gap:20px;
+
+    padding:30px;
+
 }
+
+
+
+.member-name {
+
+    font-size:26px;
+
+}
+
+
+
+.member-photo {
+
+    width:160px;
+
+    height:190px;
+
+}
+
+
+
+.member-card-footer strong {
+
+    font-size:14px;
+
+}
+
+
+}
+
+
+/* ===================================
+   CORRECTION TITRES CARTE MEMBRE UPS
+=================================== */
 
 
 .member-card h1,
 .member-card h2,
-.member-card p,
-.member-card strong,
-.member-card span {
-    background: transparent !important;
-    background-color: transparent !important;
-}
-
-/* Correction titres carte membre */
-.member-card h1,
-.member-card h2 {
-    background: none !important;
-    background-image: none !important;
-    background-clip: initial !important;
-    -webkit-background-clip: initial !important;
-    color: inherit !important;
-    -webkit-text-fill-color: inherit !important;
+.member-card h3,
+.member-card p {
+    background:none !important;
+    background-image:none !important;
+    background-clip:initial !important;
+    -webkit-background-clip:initial !important;
+    color:inherit !important;
+    -webkit-text-fill-color:inherit !important;
 }
 
 
-/* Couleurs carte */
+/* TITRE UPS */
+
 .member-card .card-title h1 {
-    color:#e6b800 !important;
-    -webkit-text-fill-color:#e6b800 !important;
+    font-family:"Space Grotesk", sans-serif !important;
+    font-size:48px !important;
+    font-weight:900 !important;
+    line-height:1 !important;
+    margin:0 !important;
+
+    color:#FDEF42 !important;
+    -webkit-text-fill-color:#FDEF42 !important;
 }
 
 
-.member-card .member-information h2 {
-    color:#C8102E !important;
-    -webkit-text-fill-color:#C8102E !important;
-}
+/* UNIS POUR LE SÉNÉGAL */
 
-/* ===============================
-   CORRECTION TITRES CARTE MEMBRE
-   =============================== */
+.member-card .card-title p:first-of-type {
+    font-size:17px !important;
+    font-weight:700 !important;
+    letter-spacing:2px !important;
+    margin:5px 0 !important;
 
-
-/* enlève uniquement le dégradé des textes */
-.member-card h1,
-.member-card h2 {
-    background: none !important;
-    background-image: none !important;
-    -webkit-background-clip: initial !important;
-    background-clip: initial !important;
-    -webkit-text-fill-color: initial !important;
+    color:white !important;
+    -webkit-text-fill-color:white !important;
 }
 
 
-/* titre CARTE DE MEMBRE */
+/* CARTE DE MEMBRE */
+
+.member-card .card-title p:last-of-type {
+    font-size:14px !important;
+    font-weight:600 !important;
+    letter-spacing:2px !important;
+    text-transform:uppercase !important;
+
+    color:white !important;
+    -webkit-text-fill-color:white !important;
+}
+
+/* Correction police UPS uniquement */
+
 .member-card .card-title h1 {
+    font-family: "Space Grotesk", sans-serif !important;
     color: #FDEF42 !important;
     -webkit-text-fill-color: #FDEF42 !important;
 }
 
+/* Ligne autour de UPS */
 
-/* nom du membre */
-.member-card .member-information h2 {
-    color: #C8102E !important;
-    -webkit-text-fill-color: #C8102E !important;
+.member-card .card-title h1 {
+    display: flex;
+    align-items: center;
+    gap: 20px;
 }
 
-
-/* garder le header vert */
-.member-card .member-card-header {
-    background: linear-gradient(
-        135deg,
-        #00853F,
-        #006b32
-    ) !important;
+.member-card .card-title h1::before,
+.member-card .card-title h1::after {
+    content: "";
+    height: 2px;
+    width: 120px;
+    background: #FDEF42;
+    display: block;
 }
 
-
-/* garder le footer rouge */
-.member-card .member-card-footer {
-    background:#C8102E !important;
+.support-button {
+    display:inline-block;
+    padding:15px 35px;
+    background:#00853F;
+    color:white;
+    text-decoration:none;
+    border-radius:30px;
+    font-weight:bold;
+    font-size:18px;
+    transition:0.2s;
 }
 
+.support-button:hover {
+    background:#006b32;
+    transform:scale(1.03);
+}
 
-.paymentButton{
+/* ===============================
+MERCI DON
+=============================== */
+
+.hero{
+
+max-width:900px;
+
+margin:80px auto;
+
+padding:60px 40px;
+
+text-align:center;
+
+background:#fff;
+
+border-radius:20px;
+
+box-shadow:0 10px 30px rgba(0,0,0,.08);
+
+}
+
+.hero h2{
+
+font-size:42px;
+
+color:#00853F;
+
+margin-bottom:25px;
+
+}
+
+.hero p{
+
+font-size:20px;
+
+line-height:1.8;
+
+color:#333;
+
+}
+
+.hero .btn{
 
 display:inline-block;
 
-margin-top:20px;
+margin-top:25px;
 
-padding:15px 30px;
+padding:16px 40px;
 
-background:#0070ba;
+background:#00853F;
 
 color:white;
 
@@ -1328,20 +1612,82 @@ font-weight:bold;
 
 border-radius:30px;
 
-}
-
-.paymentButton:hover{
-
-opacity:0.9;
+transition:.25s;
 
 }
 
-.comingSoon{
+.hero .btn:hover{
 
-margin-top:15px;
+background:#006b32;
 
-color:#666;
+transform:translateY(-2px);
 
-font-style:italic;
+}
+
+.thank-you-section{
+
+max-width:800px;
+
+margin:80px auto;
+
+padding:50px 35px;
+
+text-align:center;
+
+background:white;
+
+border-radius:20px;
+
+box-shadow:0 10px 30px rgba(0,0,0,0.08);
+
+}
+
+
+.thank-you-section h2{
+
+font-size:40px;
+
+color:#00853F;
+
+margin-bottom:25px;
+
+}
+
+
+.thank-you-section p{
+
+font-size:20px;
+
+line-height:1.7;
+
+color:#333;
+
+}
+
+
+.thank-you-section .btn{
+
+display:inline-block;
+
+margin-top:30px;
+
+padding:15px 40px;
+
+background:#00853F;
+
+color:white;
+
+text-decoration:none;
+
+border-radius:30px;
+
+font-weight:bold;
+
+}
+
+
+.thank-you-section .btn:hover{
+
+background:#006b32;
 
 }

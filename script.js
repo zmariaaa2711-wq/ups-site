@@ -2897,22 +2897,18 @@ container.insertAdjacentHTML("beforeend", `
 
 <div class="member-card-header">
 
-
 <img class="main-logo" src="assets/herov1.jpeg">
 
 
 <div class="card-title">
 
-<h1>
-CARTE DE MEMBRE
-</h1>
+    <h1>UPS</h1>
 
-<p>
-UNI POUR LE SÉNÉGAL
-</p>
+    <p>UNIS POUR LE SÉNÉGAL</p>
+
+    <p>CARTE DE MEMBRE</p>
 
 </div>
-
 
 </div>
 
@@ -2924,9 +2920,11 @@ UNI POUR LE SÉNÉGAL
 
 <div class="member-information">
 
-<h2>
+
+
+<h3 class="member-name">
 ${card.first_name} ${card.last_name}
-</h2>
+</h3>
 
 <p>
 <strong>N° membre :</strong>
